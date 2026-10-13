@@ -71,13 +71,22 @@
 </header>
 
 <main class="pt-20">
-  <!-- HERO -->
-  <section id="home" class="py-20 text-center relative overflow-hidden">
-    <div class="max-w-4xl mx-auto px-4">
+  <!-- HERO WITH IMAGE -->
+  <section id="home" class="py-16 text-center relative overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4">
       <span class="px-4 py-1.5 rounded-full bg-white/5 border border-gold-500/30 text-gold-300 text-xs font-semibold">Personal Finance Simplified</span>
-      <h1 class="mt-6 font-display font-extrabold text-5xl sm:text-6xl">Money <span class="gold-text-gradient">Sastra</span></h1>
-      <p class="mt-4 font-display font-bold text-xl text-gold-300">Master Your Money, Build Real Wealth.</p>
-      <p class="mt-4 text-white/75 max-w-2xl mx-auto">Free calculators & practical guides on compounding, budgeting, and long-term investing.</p>
+      <h1 class="mt-6 font-display font-extrabold text-4xl sm:text-6xl">Money <span class="gold-text-gradient">Sastra</span></h1>
+      <p class="mt-3 font-display font-bold text-lg sm:text-2xl text-gold-300">Master Your Money, Build Real Wealth.</p>
+      <p class="mt-3 text-white/75 max-w-2xl mx-auto text-sm sm:text-base">Free calculators & practical guides on compounding, budgeting, and long-term investing.</p>
+      
+      <!-- Hero Image Banner -->
+      <div class="mt-10 max-w-4xl mx-auto rounded-3xl overflow-hidden border border-white/15 shadow-2xl relative">
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-transparent to-transparent z-10"></div>
+        <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=80" alt="Wealth & Investment" class="w-full h-72 sm:h-96 object-cover transform hover:scale-105 transition duration-700">
+        <div class="absolute bottom-6 inset-x-0 z-20 text-center px-4">
+          <a href="#calculators" class="px-8 py-3 rounded-xl btn-gold font-display font-bold text-sm inline-block shadow-lg">Start Calculating Now →</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -135,46 +144,101 @@ const ARTICLES = [
   {
     id: 'compounding', icon: '🚀', category: 'Compounding', read: '6 min',
     title: 'Power of Compounding: The 8th Wonder of Wealth',
+    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
     excerpt: 'Why ₹10,000 a month can quietly become ₹1 crore — and why the last five years matter more than the first ten.',
     body: `
-      <h2 class="text-2xl font-bold mt-6 mb-3">Understanding the Curve</h2>
-      <p class="mb-4">Albert Einstein allegedly called compounding the eighth wonder of the world. Money grows not in a straight line but along an exponential curve — flat for years, then skyrocketing vertically.</p>
-      <h2 class="text-2xl font-bold mt-6 mb-3">The Magic of Starting Early</h2>
-      <p class="mb-4">If you invest ₹10,000 per month at 12% annual return:</p>
+      <p class="mb-4">Albert Einstein famously called compounding the eighth wonder of the world. Money grows not in a straight line but along an exponential curve — starting out flat and boring for years, then suddenly shooting almost straight up.</p>
+      <h3 class="text-xl font-bold mt-6 mb-2">The Real Mathematics of SIP</h3>
+      <p class="mb-4">Imagine investing <strong>₹10,000 per month</strong> in an equity fund delivering 12% annual returns:</p>
       <ul class="list-disc pl-5 mb-4 space-y-2">
-        <li><strong>In 10 years:</strong> Your ₹12 lakh investment becomes ~₹23 lakh.</li>
-        <li><strong>In 20 years:</strong> Your ₹24 lakh investment becomes ~₹1 crore.</li>
-        <li><strong>In 30 years:</strong> Your ₹36 lakh investment becomes ~₹3.5 crore.</li>
+        <li><strong>In 10 years:</strong> Your total investment is ₹12 lakh, growing to ~₹23 lakh.</li>
+        <li><strong>In 20 years:</strong> Your investment reaches ~₹99 lakh (nearly ₹1 crore), where your own contribution was only ₹24 lakh.</li>
+        <li><strong>In 30 years:</strong> The corpus multiplies dramatically to over ~₹3.5 crore!</li>
       </ul>
-      <p>Time is your greatest asset in wealth building. Never interrupt compounding unnecessarily.</p>`
+      <h3 class="text-xl font-bold mt-6 mb-2">Rule of 72</h3>
+      <p class="mb-4">Want to know how fast your money doubles? Divide 72 by your expected annual return. At 12% returns, your wealth doubles roughly every 6 years. Time in the market always beats timing the market.</p>`
   },
   {
     id: 'budget503020', icon: '🧾', category: 'Budgeting', read: '5 min',
     title: 'The 50-30-20 Rule: Simple Budgeting Framework',
+    image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80',
     excerpt: 'One rule, three buckets, zero spreadsheets. How to divide every rupee of your salary so saving happens automatically.',
     body: `
-      <h2 class="text-2xl font-bold mt-6 mb-3">The Three Simple Buckets</h2>
-      <p class="mb-4">Complex expense trackers often fail. The 50-30-20 rule divides your take-home pay into three straightforward portions:</p>
+      <p class="mb-4">Most traditional expense trackers and complex budgets fail because they demand too much maintenance. The 50-30-20 rule offers a cleaner, more practical approach to your monthly take-home salary.</p>
+      <h3 class="text-xl font-bold mt-6 mb-2">Breaking Down the Three Buckets</h3>
       <ul class="list-disc pl-5 mb-4 space-y-2">
-        <li><strong>50% Needs:</strong> Rent, groceries, utilities, loan EMIs, and insurance.</li>
-        <li><strong>30% Wants:</strong> Dining out, shopping, subscriptions, and entertainment.</li>
-        <li><strong>20% Savings:</strong> Mutual funds, SIPs, emergency funds, and extra debt payments.</li>
+        <li><strong>50% for Needs:</strong> Non-negotiable expenses like house rent, groceries, utility bills, insurance premiums, and minimum loan EMIs.</li>
+        <li><strong>30% for Wants:</strong> Lifestyle choices such as dining out, weekend outings, gadgets, streaming subscriptions, and vacation trips.</li>
+        <li><strong>20% for Savings & Investments:</strong> Wealth builders like mutual fund SIPs, emergency funds, PPF, and prepaying high-interest debt.</li>
       </ul>
-      <p>Automate your 20% savings on salary day so you pay yourself first before spending on wants.</p>`
+      <p class="mb-4"><strong>Pro Tip:</strong> Pay yourself first! Set up an automatic transfer on your salary day so the 20% savings portion leaves your account before you get a chance to spend it.</p>`
+  },
+  {
+    id: 'emergencyfund', icon: '🛡️', category: 'Mindset', read: '5 min',
+    title: 'Emergency Fund: Kyun Hai Ye Aapka Financial Shield?',
+    image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
+    excerpt: 'Job chali jaye, medical emergency aa jaye — emergency fund aapka pehla defence hai. Kitna chahiye aur kidhar rakhna hai?',
+    body: `
+      <p class="mb-4">Before you chase high stock market returns, your absolute first milestone must be building a rock-solid emergency fund. Life is unpredictable; sudden job losses, medical issues, or urgent home repairs can derail your finances overnight.</p>
+      <h3 class="text-xl font-bold mt-6 mb-2">How Much Should You Save?</h3>
+      <ul class="list-disc pl-5 mb-4 space-y-2">
+        <li><strong>Salaried Professionals:</strong> Aim for 3 to 6 months of essential monthly expenses.</li>
+        <li><strong>Freelancers & Business Owners:</strong> Keep a safer cushion of 6 to 9 months due to irregular income cycles.</li>
+      </ul>
+      <h3 class="text-xl font-bold mt-6 mb-2">Where to Keep It?</h3>
+      <p class="mb-4">Keep your emergency fund strictly in liquid safe instruments like high-yield savings accounts or liquid mutual funds — never risk this money in volatile equity stocks.</p>`
+  },
+  {
+    id: 'siplumpsum', icon: '⚖️', category: 'Investing', read: '6 min',
+    title: 'SIP vs Lumpsum: Kisme Invest Karna Behtar Hai?',
+    image: 'https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=800&q=80',
+    excerpt: 'Ek baar me bada paisa daalein ya har mahine thoda-thoda? Dono ke fayde, nuksaan, aur kab kya karna chahiye.',
+    body: `
+      <p class="mb-4">A common dilemma for investors receiving a bonus or regular salary is whether to invest everything at once (Lumpsum) or spread it out monthly via Systematic Investment Plans (SIP).</p>
+      <h3 class="text-xl font-bold mt-6 mb-2">Why SIP Wins on Discipline</h3>
+      <p class="mb-4">SIPs benefit from <strong>rupee cost averaging</strong> — when markets fall, your fixed installment buys more units, lowering your average purchase cost. It completely removes emotional decision-making during market crashes.</p>
+      <h3 class="text-xl font-bold mt-6 mb-2">When Lumpsum Shines</h3>
+      <p class="mb-4">If you have a large sum ready and markets are stable or rising, putting it to work immediately (time in the market) historically yields higher returns than waiting on the sidelines.</p>`
+  },
+  {
+    id: 'basantbaheti', icon: '📉', category: 'Investing', read: '6 min',
+    title: 'Basant Baheti Strategy: Badhe Companies me Trouble ke Waqt Invest Karna',
+    image: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
+    excerpt: 'Jab acchi company temporararily mushkil me ho, tab market use sasta kar deta hai. Basant Baheti style me value kaise dhundhein.',
+    body: `
+      <p class="mb-4">Value investing often involves looking where others are panicking. Renowned investor strategies emphasize buying fundamentally strong businesses when they face temporary headwinds.</p>
+      <h3 class="text-xl font-bold mt-6 mb-2">Temporary Problem vs Permanent Damage</h3>
+      <ul class="list-disc pl-5 mb-4 space-y-2">
+        <li><strong>Temporary Headwinds:</strong> One bad quarter, regulatory noise, or sector-wide corrections that drop a great stock price by 30-40%. These create massive buying opportunities.</li>
+        <li><strong>Permanent Damage:</strong> Broken business models, unethical management, or secular declines where you should steer clear entirely.</li>
+      </ul>
+      <p class="mb-4">Always perform balance sheet checks and verify debt levels before entering a contrarian trade.</p>`
   },
   {
     id: 'debttrap', icon: '🕳️', category: 'Debt', read: '6 min',
     title: 'Debt Trap se Kaise Bachein? (Good Debt vs Bad Debt)',
+    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80',
     excerpt: 'Har loan kharab nahi hota — aur har loan aapko azaad bhi nahi karta. Good debt vs bad debt ka difference samjhiye.',
     body: `
-      <h2 class="text-2xl font-bold mt-6 mb-3">Good Debt vs Bad Debt</h2>
-      <p class="mb-4">Not all loans are evil. Good debt (like home loans or education loans) helps build assets or future earning capacity. Bad debt (like high-interest credit card revolving balances or luxury personal loans) destroys your net worth.</p>
-      <h2 class="text-2xl font-bold mt-6 mb-3">How to Escape Debt Traps</h2>
+      <p class="mb-4">Debt can either be a ladder to build assets or an anchor dragging you down. Understanding the clear boundary between good and bad debt is vital for financial health.</p>
+      <h3 class="text-xl font-bold mt-6 mb-2">Good Debt vs Bad Debt</h3>
+      <p class="mb-4"><strong>Good Debt</strong> (like home loans at reasonable rates) helps appreciate asset value or boosts future income. <strong>Bad Debt</strong> (like credit card revolving balances carrying 36-48% interest rates) destroys wealth rapidly.</p>
+      <h3 class="text-xl font-bold mt-6 mb-2">How to Get Out</h3>
+      <p class="mb-4">Use the Debt Avalanche method — list your debts and aggressively pay off the highest interest-rate loan first to minimize total interest outflow.</p>`
+  },
+  {
+    id: 'gold', icon: '🥇', category: 'Gold', read: '5 min',
+    title: 'Gold Investment Rules: Dhanteras aur Long-Term Wealth ke Liye',
+    image: 'https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=800&q=80',
+    excerpt: 'Gold sirf jewellery nahi, portfolio ka insurance bhi hai. Dhanteras pe sahi form, sahi allocation aur sahi rules jaaniye.',
+    body: `
+      <p class="mb-4">In Indian households, gold holds immense cultural and emotional value, especially around festive seasons like Dhanteras. However, smart investors look at gold through a portfolio lens.</p>
+      <h3 class="text-xl font-bold mt-6 mb-2">The Golden Rules of Allocation</h3>
       <ul class="list-disc pl-5 mb-4 space-y-2">
-        <li>List down all your loans and their interest rates.</li>
-        <li>Target high-interest credit card debt first (Avalanche method).</li>
-        <li>Stop taking new consumer EMIs for non-essential lifestyle upgrades.</li>
-      </ul>`
+        <li>Keep gold between <strong>5% to 10%</strong> of your overall portfolio purely as a hedge against inflation and market crashes.</li>
+        <li>Prefer paper gold formats like Sovereign Gold Bonds (SGBs) or Gold ETFs over physical jewellery to avoid heavy making charges and GST loss.</li>
+      </ul>
+      <p class="mb-4">Treat gold as portfolio insurance, not as your primary growth asset.</p>`
   }
 ];
 
@@ -182,11 +246,14 @@ function renderInsights() {
   const grid = document.getElementById('insightsGrid');
   if (!grid) return;
   grid.innerHTML = ARTICLES.map(a => `
-    <div onclick="openArticle('${a.id}')" class="bg-white p-6 rounded-2xl border border-gold-200 shadow-sm cursor-pointer hover:shadow-lg transition">
-      <span class="px-3 py-1 bg-navy-900 text-gold-300 text-xs font-bold rounded-full">${a.category}</span>
-      <h3 class="font-display font-bold text-lg mt-3 text-navy-900">${a.title}</h3>
-      <p class="text-sm text-navy-900/70 mt-2">${a.excerpt}</p>
-      <span class="inline-block mt-4 text-gold-700 font-bold text-sm">Read Article →</span>
+    <div onclick="openArticle('${a.id}')" class="bg-white rounded-2xl border border-gold-200 shadow-sm cursor-pointer hover:shadow-lg transition overflow-hidden flex flex-col">
+      <img src="${a.image}" alt="${a.title}" class="h-44 w-full object-cover">
+      <div class="p-6 flex flex-col flex-1">
+        <span class="self-start px-3 py-1 bg-navy-900 text-gold-300 text-xs font-bold rounded-full">${a.category}</span>
+        <h3 class="font-display font-bold text-lg mt-3 text-navy-900">${a.title}</h3>
+        <p class="text-sm text-navy-900/70 mt-2 flex-1">${a.excerpt}</p>
+        <span class="inline-block mt-4 text-gold-700 font-bold text-sm">Read Article →</span>
+      </div>
     </div>`).join('');
 }
 
@@ -195,10 +262,11 @@ function openArticle(id) {
   if (!a) return;
   document.getElementById('articleBody').innerHTML = `
     <button onclick="closeArticle()" class="text-gold-700 font-bold mb-6 inline-block">← Back to Insights</button>
+    <img src="${a.image}" alt="${a.title}" class="h-64 w-full object-cover rounded-2xl mb-6 shadow-md">
     <span class="px-3 py-1 bg-navy-900 text-gold-300 text-xs font-bold rounded-full">${a.category}</span>
     <h1 class="text-3xl font-extrabold text-navy-900 mt-3">${a.title}</h1>
     <p class="text-navy-900/60 text-sm mt-1 mb-6">${a.read} read</p>
-    <div class="text-navy-900/80 leading-relaxed">${a.body}</div>
+    <div class="text-navy-900/80 leading-relaxed space-y-4">${a.body}</div>
   `;
   document.getElementById('articleOverlay').classList.remove('hidden');
   document.body.classList.add('article-open');
@@ -280,7 +348,7 @@ function renderCalculator() {
       <div class="grid grid-cols-3 gap-3">
         <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Monthly EMI</p><p id="eEmi" class="font-bold text-white mt-1">₹0</p></div>
         <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Total Interest</p><p id="eInt" class="font-bold text-gold-400 mt-1">₹0</p></div>
-        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Total Payment</p><p id="eTot" class="font-bold text-gold-300 mt-1">₹0/p></p></div>
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Total Payment</p><p id="eTot" class="font-bold text-gold-300 mt-1">₹0</p></div>
       </div>`;
     calcEMI();
   }
