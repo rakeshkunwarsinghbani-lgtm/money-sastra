@@ -18,32 +18,12 @@
     theme: {
       extend: {
         colors: {
-          navy: {
-            950: '#071026',
-            900: '#0A1730',
-            800: '#0A1F44',
-            700: '#0D2A5C',
-            600: '#12294F',
-            500: '#1A3A6B'
-          },
-          gold: {
-            50:  '#FDF8EC',
-            100: '#FBEFCF',
-            300: '#FFD54A',
-            400: '#F7C33C',
-            500: '#F0B429',
-            600: '#D69E1E',
-            700: '#C9901A',
-            800: '#9A6C10'
-          }
+          navy: { 950: '#071026', 900: '#0A1730', 800: '#0A1F44', 700: '#0D2A5C', 600: '#12294F', 500: '#1A3A6B' },
+          gold: { 50: '#FDF8EC', 100: '#FBEFCF', 300: '#FFD54A', 400: '#F7C33C', 500: '#F0B429', 600: '#D69E1E', 700: '#C9901A', 800: '#9A6C10' }
         },
         fontFamily: {
-          display: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-          body: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
-        },
-        boxShadow: {
-          soft: '0 10px 30px -12px rgba(3, 10, 25, 0.45)',
-          lift: '0 22px 45px -18px rgba(240, 180, 41, 0.35)'
+          display: ['"Plus Jakarta Sans"', 'sans-serif'],
+          body: ['Inter', 'sans-serif']
         }
       }
     }
@@ -56,136 +36,100 @@
 <style>
   html { scroll-behavior: smooth; }
   body { background-color: #0A1F44; }
-
-  /* Scroll-reveal */
-  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1); }
-  .reveal.is-visible { opacity: 1; transform: none; }
-
-  /* Range slider styling */
   input[type="range"] {
-    -webkit-appearance: none; appearance: none;
-    width: 100%; height: 6px; border-radius: 999px;
-    background: linear-gradient(90deg, #F0B429 0%, #F0B429 var(--fill, 50%), #16325e var(--fill, 50%), #16325e 100%);
-    cursor: pointer;
+    -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 999px;
+    background: #16325e; cursor: pointer;
   }
   input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; appearance: none;
-    width: 20px; height: 20px; border-radius: 50%;
-    background: #FFD54A; border: 3px solid #0A1730;
-    box-shadow: 0 0 0 3px rgba(240,180,41,.25); transition: transform .15s ease;
+    -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+    background: #FFD54A; border: 2px solid #0A1730;
   }
-  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.12); }
-
-  /* Number input: hide spinners */
-  input[type="number"]::-webkit-outer-spin-button,
-  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-  input[type="number"] { -moz-appearance: textfield; }
-
-  .hero-grid {
-    background-image: radial-gradient(rgba(240,180,41,.16) 1px, transparent 1px);
-    background-size: 26px 26px;
-  }
-  .gold-text-gradient {
-    background: linear-gradient(95deg, #FFD54A 0%, #F0B429 55%, #C9901A 100%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .btn-gold {
-    background: linear-gradient(135deg, #FFD54A 0%, #F0B429 55%, #C9901A 100%);
-    color: #0A1730;
-  }
-  .btn-gold:hover { box-shadow: 0 18px 35px -14px rgba(240,180,41,.55); transform: translateY(-2px); }
-
-  .calc-tab {
-    background: transparent;
-    color: rgba(255,255,255,.7);
-    border: 1px solid transparent;
-  }
-  .calc-tab:hover:not([aria-selected="true"]) {
-    background: rgba(255,255,255,.07);
-    color: #fff;
-  }
-  .calc-tab[aria-selected="true"] {
-    background: linear-gradient(135deg, #FFD54A 0%, #F0B429 55%, #C9901A 100%);
-    color: #0A1730;
-    border-color: rgba(255,213,74,.6);
-    box-shadow: 0 10px 26px -10px rgba(240,180,41,.75);
-  }
+  input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .gold-text-gradient { background: linear-gradient(95deg, #FFD54A 0%, #F0B429 55%, #C9901A 100%); -webkit-background-clip: text; color: transparent; }
+  .btn-gold { background: linear-gradient(135deg, #FFD54A 0%, #F0B429 55%, #C9901A 100%); color: #0A1730; }
+  .calc-tab { background: transparent; color: rgba(255,255,255,.7); }
+  .calc-tab[aria-selected="true"] { background: linear-gradient(135deg, #FFD54A 0%, #F0B429 55%, #C9901A 100%); color: #0A1730; }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
-  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 </style>
 </head>
 <body class="font-body text-white antialiased">
 
-<!-- ============ NAVBAR ============ -->
-<header id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-navy-900/80 backdrop-blur-xl border-b border-white/10">
-  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16 sm:h-20">
-      <a href="#home" class="flex items-center gap-2.5 group">
-        <span class="grid place-items-center w-10 h-10 rounded-xl btn-gold font-display font-extrabold text-[15px]">MS</span>
-        <span class="font-display font-extrabold text-lg sm:text-xl tracking-tight">Money <span class="gold-text-gradient">Sastra</span></span>
-      </a>
-      <div class="hidden md:flex items-center gap-1">
-        <a href="#home" class="px-3.5 py-2 text-sm font-medium text-white/75 hover:text-gold-300 transition rounded-lg">Home</a>
-        <a href="#calculators" class="px-3.5 py-2 text-sm font-medium text-white/75 hover:text-gold-300 transition rounded-lg">Calculators</a>
-        <a href="#insights" class="px-3.5 py-2 text-sm font-medium text-white/75 hover:text-gold-300 transition rounded-lg">Insights</a>
-        <a href="#about" class="px-3.5 py-2 text-sm font-medium text-white/75 hover:text-gold-300 transition rounded-lg">About</a>
-      </div>
+<!-- NAVBAR -->
+<header class="fixed top-0 inset-x-0 z-50 bg-navy-900/90 backdrop-blur-xl border-b border-white/10">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+    <a href="#home" class="flex items-center gap-2.5">
+      <span class="grid place-items-center w-10 h-10 rounded-xl btn-gold font-display font-extrabold text-[15px]">MS</span>
+      <span class="font-display font-extrabold text-xl tracking-tight">Money <span class="gold-text-gradient">Sastra</span></span>
+    </a>
+    <div class="hidden md:flex items-center gap-2">
+      <a href="#home" class="px-3.5 py-2 text-sm text-white/75 hover:text-gold-300">Home</a>
+      <a href="#calculators" class="px-3.5 py-2 text-sm text-white/75 hover:text-gold-300">Calculators</a>
+      <a href="#insights" class="px-3.5 py-2 text-sm text-white/75 hover:text-gold-300">Insights</a>
     </div>
   </nav>
 </header>
 
-<main>
-  <!-- ============ HERO ============ -->
-  <section id="home" class="relative overflow-hidden pt-32 pb-20 text-center">
-    <div class="absolute inset-0 hero-grid pointer-events-none opacity-50"></div>
-    <div class="relative max-w-7xl mx-auto px-4">
-      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-gold-500/30 text-gold-300 text-xs sm:text-sm font-semibold">
-        Personal Finance, Simplified — English &amp; Hinglish
-      </span>
-      <h1 class="mt-6 font-display font-extrabold text-5xl sm:text-6xl lg:text-7xl">
-        Money <span class="gold-text-gradient">Sastra</span>
-      </h1>
-      <p class="mt-4 font-display font-bold text-xl sm:text-2xl text-gold-300">
-        Master Your Money, Build Real Wealth.
-      </p>
-      <p class="max-w-2xl mx-auto mt-4 text-base sm:text-lg text-white/75">
-        Wealth is not about how much you earn — it is about how smartly you invest and let compounding work for you.
-      </p>
-      <div class="mt-8 flex justify-center gap-4">
-        <a href="#calculators" class="px-7 py-3.5 rounded-xl btn-gold font-display font-bold text-sm shadow-soft">Explore Calculators</a>
+<main class="pt-20">
+  <!-- HERO -->
+  <section id="home" class="py-20 text-center relative overflow-hidden">
+    <div class="max-w-4xl mx-auto px-4">
+      <span class="px-4 py-1.5 rounded-full bg-white/5 border border-gold-500/30 text-gold-300 text-xs font-semibold">Personal Finance Simplified</span>
+      <h1 class="mt-6 font-display font-extrabold text-5xl sm:text-6xl">Money <span class="gold-text-gradient">Sastra</span></h1>
+      <p class="mt-4 font-display font-bold text-xl text-gold-300">Master Your Money, Build Real Wealth.</p>
+      <p class="mt-4 text-white/75 max-w-2xl mx-auto">Free calculators & practical guides on compounding, budgeting, and long-term investing.</p>
+    </div>
+  </section>
+
+  <!-- CALCULATORS SECTION -->
+  <section id="calculators" class="py-16 bg-navy-900">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-10">
+        <span class="text-gold-400 font-semibold text-sm uppercase">Money Tools</span>
+        <h2 class="font-display font-extrabold text-3xl sm:text-4xl mt-1">Interactive Calculators</h2>
+      </div>
+
+      <div class="rounded-2xl bg-navy-800/80 border border-white/10 p-6 sm:p-8">
+        <!-- Tabs -->
+        <div class="flex gap-2 overflow-x-auto pb-3 mb-6 scrollbar-hide" id="calcTabs">
+          <button onclick="switchTab('sip')" id="tab-sip" class="calc-tab px-4 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap" aria-selected="true">📈 SIP Wealth</button>
+          <button onclick="switchTab('lumpsum')" id="tab-lumpsum" class="calc-tab px-4 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap" aria-selected="false">💰 Lumpsum</button>
+          <button onclick="switchTab('budget')" id="tab-budget" class="calc-tab px-4 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap" aria-selected="false">🧾 50-30-20 Budget</button>
+          <button onclick="switchTab('freedom')" id="tab-freedom" class="calc-tab px-4 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap" aria-selected="false">🏖️ Freedom Number</button>
+          <button onclick="switchTab('emi')" id="tab-emi" class="calc-tab px-4 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap" aria-selected="false">🏦 EMI Calculator</button>
+        </div>
+
+        <div class="grid lg:grid-cols-5 gap-8">
+          <div class="lg:col-span-2 space-y-4" id="calcInputs"></div>
+          <div class="lg:col-span-3 space-y-6" id="calcResults"></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ CALCULATORS SECTION ============ -->
-  <section id="calculators" class="py-20 bg-navy-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-gold-400 font-semibold text-sm uppercase tracking-widest">Money Tools</span>
-        <h2 class="mt-2 font-display font-extrabold text-3xl sm:text-4xl">Interactive Calculators</h2>
-        <p class="mt-2 text-white/70">Move the sliders and watch your wealth grow instantly.</p>
+  <!-- INSIGHTS SECTION -->
+  <section id="insights" class="py-16 bg-gold-50 text-navy-900">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <span class="text-gold-700 font-semibold text-sm uppercase">Insights</span>
+        <h2 class="font-display font-extrabold text-3xl sm:text-4xl mt-1">Money Sastra Reads</h2>
+        <p class="text-navy-900/70 mt-2">Evergreen guides on compounding, budgeting, and debt management.</p>
       </div>
 
-      <div class="max-w-5xl mx-auto rounded-2xl bg-navy-800/80 border border-white/10 p-6 sm:p-8 shadow-xl">
-        <!-- Tabs -->
-        <div class="flex gap-2 overflow-x-auto pb-3 mb-6 scrollbar-hide" id="calcTabs">
-          <button onclick="switchTab('sip')" id="tab-sip" class="calc-tab px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap" aria-selected="true">📈 SIP Wealth</button>
-          <button onclick="switchTab('lumpsum')" id="tab-lumpsum" class="calc-tab px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap" aria-selected="false">💰 Lumpsum</button>
-          <button onclick="switchTab('budget')" id="tab-budget" class="calc-tab px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap" aria-selected="false">🧾 50-30-20 Budget</button>
-          <button onclick="switchTab('freedom')" id="tab-freedom" class="calc-tab px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap" aria-selected="false">🏖️ Freedom Number</button>
-          <button onclick="switchTab('emi')" id="tab-emi" class="calc-tab px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap" aria-selected="false">🏦 EMI Calculator</button>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-gold-200 shadow-sm">
+          <span class="px-3 py-1 bg-navy-900 text-gold-300 text-xs font-bold rounded-full">Compounding</span>
+          <h3 class="font-display font-bold text-lg mt-3 text-navy-900">Power of Compounding</h3>
+          <p class="text-sm text-navy-900/70 mt-2">Why starting early matters more than how much you invest initially.</p>
         </div>
-
-        <!-- Calculator Panels -->
-        <div class="grid lg:grid-cols-5 gap-8">
-          <!-- Inputs -->
-          <div class="lg:col-span-2 space-y-5" id="calcInputs">
-            <!-- Dynamically populated -->
-          </div>
-          <!-- Results & Chart -->
-          <div class="lg:col-span-3 space-y-6" id="calcResults">
-            <!-- Dynamically populated -->
-          </div>
+        <div class="bg-white p-6 rounded-2xl border border-gold-200 shadow-sm">
+          <span class="px-3 py-1 bg-navy-900 text-gold-300 text-xs font-bold rounded-full">Budgeting</span>
+          <h3 class="font-display font-bold text-lg mt-3 text-navy-900">The 50-30-20 Rule</h3>
+          <p class="text-sm text-navy-900/70 mt-2">A foolproof framework to divide your income into needs, wants, and savings.</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-gold-200 shadow-sm">
+          <span class="px-3 py-1 bg-navy-900 text-gold-300 text-xs font-bold rounded-full">Debt</span>
+          <h3 class="font-display font-bold text-lg mt-3 text-navy-900">Good Debt vs Bad Debt</h3>
+          <p class="text-sm text-navy-900/70 mt-2">How to stay clear of high-interest credit card traps and manage loans smartly.</p>
         </div>
       </div>
     </div>
@@ -194,8 +138,8 @@
 
 <script>
 const inr = (n) => '₹' + Math.round(n).toLocaleString('en-IN');
-
 let currentTab = 'sip';
+let activeChart = null;
 
 function switchTab(tab) {
   currentTab = tab;
@@ -212,187 +156,139 @@ function renderCalculator() {
 
   if (currentTab === 'sip') {
     inputs.innerHTML = `
-      <div>
-        <label class="block text-sm font-semibold mb-2">Monthly SIP Amount (₹)</label>
-        <input type="number" id="sipAmt" value="10000" min="500" step="500" class="w-full px-4 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calculateSIP()">
-        <input type="range" id="sipAmtRng" value="10000" min="500" max="200000" step="500" class="w-full mt-2" oninput="syncInput('sipAmt', this.value); calculateSIP()">
-      </div>
-      <div>
-        <label class="block text-sm font-semibold mb-2">Expected Return (% p.a.)</label>
-        <input type="number" id="sipRet" value="12" min="1" max="25" step="0.5" class="w-full px-4 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calculateSIP()">
-        <input type="range" id="sipRetRng" value="12" min="1" max="25" step="0.5" class="w-full mt-2" oninput="syncInput('sipRet', this.value); calculateSIP()">
-      </div>
-      <div>
-        <label class="block text-sm font-semibold mb-2">Time Period (Years)</label>
-        <input type="number" id="sipYrs" value="20" min="1" max="40" class="w-full px-4 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calculateSIP()">
-        <input type="range" id="sipYrsRng" value="20" min="1" max="40" class="w-full mt-2" oninput="syncInput('sipYrs', this.value); calculateSIP()">
-      </div>
-    `;
+      <div><label class="text-sm font-semibold mb-1 block">Monthly SIP (₹)</label><input type="number" id="sipAmt" value="10000" class="w-full px-3 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calcSIP()"></div>
+      <div><label class="text-sm font-semibold mb-1 block">Return (% p.a.)</label><input type="number" id="sipRet" value="12" class="w-full px-3 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calcSIP()"></div>
+      <div><label class="text-sm font-semibold mb-1 block">Years</label><input type="number" id="sipYrs" value="20" class="w-full px-3 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calcSIP()"></div>`;
     results.innerHTML = `
       <div class="grid grid-cols-3 gap-3">
-        <div class="bg-navy-950/50 p-4 rounded-xl border border-white/10">
-          <p class="text-xs text-white/50 uppercase font-bold">Invested</p>
-          <p id="resSipInv" class="text-lg font-extrabold text-white mt-1">₹0</p>
-        </div>
-        <div class="bg-navy-950/50 p-4 rounded-xl border border-white/10">
-          <p class="text-xs text-white/50 uppercase font-bold">Returns</p>
-          <p id="resSipGain" class="text-lg font-extrabold text-gold-400 mt-1">₹0</p>
-        </div>
-        <div class="bg-navy-950/50 p-4 rounded-xl border border-white/10">
-          <p class="text-xs text-white/50 uppercase font-bold">Total Value</p>
-          <p id="resSipTot" class="text-lg font-extrabold text-gold-300 mt-1">₹0</p>
-        </div>
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Invested</p><p id="sInv" class="font-bold text-white mt-1">₹0</p></div>
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Returns</p><p id="sGain" class="font-bold text-gold-400 mt-1">₹0</p></div>
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Total Value</p><p id="sTot" class="font-bold text-gold-300 mt-1">₹0</p></div>
       </div>
-      <div class="h-64 relative bg-navy-950/40 rounded-xl p-4 border border-white/10">
-        <canvas id="sipChart"></canvas>
-      </div>
-    `;
-    calculateSIP();
+      <div class="h-60 relative bg-navy-950/40 rounded-xl p-3 border border-white/10"><canvas id="myChart"></canvas></div>`;
+    calcSIP();
   } else if (currentTab === 'lumpsum') {
     inputs.innerHTML = `
-      <div>
-        <label class="block text-sm font-semibold mb-2">Total Investment (₹)</label>
-        <input type="number" id="lsAmt" value="500000" min="10000" step="10000" class="w-full px-4 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calculateLumpsum()">
-        <input type="range" id="lsAmtRng" value="500000" min="10000" max="10000000" step="10000" class="w-full mt-2" oninput="syncInput('lsAmt', this.value); calculateLumpsum()">
-      </div>
-      <div>
-        <label class="block text-sm font-semibold mb-2">Expected Return (% p.a.)</label>
-        <input type="number" id="lsRet" value="12" min="1" max="25" step="0.5" class="w-full px-4 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calculateLumpsum()">
-        <input type="range" id="lsRetRng" value="12" min="1" max="25" step="0.5" class="w-full mt-2" oninput="syncInput('lsRet', this.value); calculateLumpsum()">
-      </div>
-      <div>
-        <label class="block text-sm font-semibold mb-2">Time Period (Years)</label>
-        <input type="number" id="lsYrs" value="15" min="1" max="40" class="w-full px-4 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calculateLumpsum()">
-        <input type="range" id="lsYrsRng" value="15" min="1" max="40" class="w-full mt-2" oninput="syncInput('lsYrs', this.value); calculateLumpsum()">
-      </div>
-    `;
+      <div><label class="text-sm font-semibold mb-1 block">Investment (₹)</label><input type="number" id="lsAmt" value="500000" class="w-full px-3 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calcLS()"></div>
+      <div><label class="text-sm font-semibold mb-1 block">Return (% p.a.)</label><input type="number" id="lsRet" value="12" class="w-full px-3 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calcLS()"></div>
+      <div><label class="text-sm font-semibold mb-1 block">Years</label><input type="number" id="lsYrs" value="15" class="w-full px-3 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calcLS()"></div>`;
     results.innerHTML = `
       <div class="grid grid-cols-3 gap-3">
-        <div class="bg-navy-950/50 p-4 rounded-xl border border-white/10">
-          <p class="text-xs text-white/50 uppercase font-bold">Invested</p>
-          <p id="resLsInv" class="text-lg font-extrabold text-white mt-1">₹0</p>
-        </div>
-        <div class="bg-navy-950/50 p-4 rounded-xl border border-white/10">
-          <p class="text-xs text-white/50 uppercase font-bold">Returns</p>
-          <p id="resLsGain" class="text-lg font-extrabold text-gold-400 mt-1">₹0</p>
-        </div>
-        <div class="bg-navy-950/50 p-4 rounded-xl border border-white/10">
-          <p class="text-xs text-white/50 uppercase font-bold">Maturity Value</p>
-          <p id="resLsTot" class="text-lg font-extrabold text-gold-300 mt-1">₹0</p>
-        </div>
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Invested</p><p id="lInv" class="font-bold text-white mt-1">₹0</p></div>
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Returns</p><p id="lGain" class="font-bold text-gold-400 mt-1">₹0</p></div>
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Maturity</p><p id="lTot" class="font-bold text-gold-300 mt-1">₹0</p></div>
       </div>
-      <div class="h-64 relative bg-navy-950/40 rounded-xl p-4 border border-white/10">
-        <canvas id="lsChart"></canvas>
+      <div class="h-60 relative bg-navy-950/40 rounded-xl p-3 border border-white/10"><canvas id="myChart"></canvas></div>`;
+    calcLS();
+  } else if (currentTab === 'budget') {
+    inputs.innerHTML = `
+      <div><label class="text-sm font-semibold mb-1 block">Monthly Income (₹)</label><input type="number" id="bInc" value="75000" class="w-full px-3 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calcBudget()"></div>`;
+    results.innerHTML = `
+      <div class="grid grid-cols-3 gap-3">
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Needs (50%)</p><p id="bNeeds" class="font-bold text-white mt-1">₹0</p></div>
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Wants (30%)</p><p id="bWants" class="font-bold text-gold-400 mt-1">₹0</p></div>
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Savings (20%)</p><p id="bSave" class="font-bold text-gold-300 mt-1">₹0</p></div>
       </div>
-    `;
-    calculateLumpsum();
-  } else {
-    inputs.innerHTML = `<div class="text-white/70 py-10">Calculator ready. Select SIP or Lumpsum for interactive graphs, or check back as we expand all tools!</div>`;
-    results.innerHTML = `<div class="text-white/50 py-10">Select a calculator from the left tabs.</div>`;
+      <div class="p-4 bg-navy-950/40 rounded-xl border border-white/10 text-xs text-white/70">
+        The 50-30-20 rule helps you allocate half your income for essentials, 30% for lifestyle wants, and 20% straight into investments.
+      </div>`;
+    calcBudget();
+  } else if (currentTab === 'freedom') {
+    inputs.innerHTML = `
+      <div><label class="text-sm font-semibold mb-1 block">Monthly Expenses (₹)</label><input type="number" id="fExp" value="50000" class="w-full px-3 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calcFreedom()"></div>
+      <div><label class="text-sm font-semibold mb-1 block">Years to Retirement</label><input type="number" id="fYrs" value="20" class="w-full px-3 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calcFreedom()"></div>`;
+    results.innerHTML = `
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-navy-950/50 p-4 rounded-xl border border-white/10"><p class="text-xs text-white/50">Freedom Corpus</p><p id="fCorpus" class="font-bold text-gold-300 text-lg mt-1">₹0</p></div>
+        <div class="bg-navy-950/50 p-4 rounded-xl border border-white/10"><p class="text-xs text-white/50">Monthly SIP Needed</p><p id="fSip" class="font-bold text-gold-400 text-lg mt-1">₹0</p></div>
+      </div>`;
+    calcFreedom();
+  } else if (currentTab === 'emi') {
+    inputs.innerHTML = `
+      <div><label class="text-sm font-semibold mb-1 block">Loan Amount (₹)</label><input type="number" id="eAmt" value="2500000" class="w-full px-3 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calcEMI()"></div>
+      <div><label class="text-sm font-semibold mb-1 block">Interest Rate (% p.a.)</label><input type="number" id="eRate" value="8.5" step="0.1" class="w-full px-3 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calcEMI()"></div>
+      <div><label class="text-sm font-semibold mb-1 block">Tenure (Years)</label><input type="number" id="eYrs" value="20" class="w-full px-3 py-2 rounded-lg bg-navy-950 border border-white/20 text-gold-300 font-bold" oninput="calcEMI()"></div>`;
+    results.innerHTML = `
+      <div class="grid grid-cols-3 gap-3">
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Monthly EMI</p><p id="eEmi" class="font-bold text-white mt-1">₹0</p></div>
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Total Interest</p><p id="eInt" class="font-bold text-gold-400 mt-1">₹0</p></div>
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Total Payment</p><p id="eTot" class="font-bold text-gold-300 mt-1">₹0</p></div>
+      </div>`;
+    calcEMI();
   }
 }
 
-function syncInput(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.value = val;
-  const rng = document.getElementById(id + 'Rng');
-  if (rng) {
-    const pct = ((val - rng.min) / (rng.max - rng.min)) * 100;
-    rng.style.setProperty('--fill', pct + '%');
-  }
-}
-
-let activeChart = null;
-
-function calculateSIP() {
+function calcSIP() {
   const P = parseFloat(document.getElementById('sipAmt').value) || 0;
-  const annualRet = parseFloat(document.getElementById('sipRet').value) || 0;
-  const years = parseFloat(document.getElementById('sipYrs').value) || 0;
-
-  const r = annualRet / 12 / 100;
-  const n = years * 12;
+  const r = (parseFloat(document.getElementById('sipRet').value) || 0) / 12 / 100;
+  const n = (parseFloat(document.getElementById('sipYrs').value) || 0) * 12;
   const fv = r === 0 ? P * n : P * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
-  const invested = P * n;
-  const gain = Math.max(0, fv - invested);
-
-  document.getElementById('resSipInv').innerText = inr(invested);
-  document.getElementById('resSipGain').innerText = inr(gain);
-  document.getElementById('resSipTot').innerText = inr(fv);
-
-  const ctx = document.getElementById('sipChart');
-  if (!ctx) return;
-  if (activeChart) activeChart.destroy();
-
-  activeChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: Array.from({length: years}, (_, i) => 'Yr ' + (i + 1)),
-      datasets: [
-        {
-          label: 'Invested',
-          data: Array.from({length: years}, (_, i) => P * 12 * (i + 1)),
-          borderColor: '#1A3A6B',
-          backgroundColor: '#1A3A6B33',
-          fill: true
-        },
-        {
-          label: 'Portfolio Value',
-          data: Array.from({length: years}, (_, i) => {
-            const m = (i + 1) * 12;
-            return r === 0 ? P * m : P * ((Math.pow(1 + r, m) - 1) / r) * (1 + r);
-          }),
-          borderColor: '#F0B429',
-          backgroundColor: '#F0B42933',
-          fill: true
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { labels: { color: '#fff' } } },
-      scales: {
-        x: { ticks: { color: '#aaa' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-        y: { ticks: { color: '#aaa' }, grid: { color: 'rgba(255,255,255,0.05)' } }
-      }
-    }
+  const inv = P * n;
+  document.getElementById('sInv').innerText = inr(inv);
+  document.getElementById('sGain').innerText = inr(Math.max(0, fv - inv));
+  document.getElementById('sTot').innerText = inr(fv);
+  drawChart(n / 12, (i) => P * 12 * (i + 1), (i) => {
+    const m = (i + 1) * 12;
+    return r === 0 ? P * m : P * ((Math.pow(1 + r, m) - 1) / r) * (1 + r);
   });
 }
 
-function calculateLumpsum() {
+function calcLS() {
   const P = parseFloat(document.getElementById('lsAmt').value) || 0;
-  const annualRet = parseFloat(document.getElementById('lsRet').value) || 0;
-  const years = parseFloat(document.getElementById('lsYrs').value) || 0;
+  const r = (parseFloat(document.getElementById('lsRet').value) || 0) / 100;
+  const yrs = parseFloat(document.getElementById('lsYrs').value) || 0;
+  const fv = P * Math.pow(1 + r, yrs);
+  document.getElementById('lInv').innerText = inr(P);
+  document.getElementById('lGain').innerText = inr(Math.max(0, fv - P));
+  document.getElementById('lTot').innerText = inr(fv);
+  drawChart(yrs, () => P, (i) => P * Math.pow(1 + r, i));
+}
 
-  const r = annualRet / 100;
-  const fv = P * Math.pow(1 + r, years);
-  const gain = Math.max(0, fv - P);
+function calcBudget() {
+  const inc = parseFloat(document.getElementById('bInc').value) || 0;
+  document.getElementById('bNeeds').innerText = inr(inc * 0.5);
+  document.getElementById('bWants').innerText = inr(inc * 0.3);
+  document.getElementById('bSave').innerText = inr(inc * 0.2);
+}
 
-  document.getElementById('resLsInv').innerText = inr(P);
-  document.getElementById('resLsGain').innerText = inr(gain);
-  document.getElementById('resLsTot').innerText = inr(fv);
+function calcFreedom() {
+  const exp = (parseFloat(document.getElementById('fExp').value) || 0) * 12;
+  const yrs = parseFloat(document.getElementById('fYrs').value) || 0;
+  const futExp = exp * Math.pow(1.06, yrs);
+  const corpus = futExp * 25;
+  const r = 0.12 / 12;
+  const n = yrs * 12;
+  const sip = n > 0 ? corpus / (((Math.pow(1 + r, n) - 1) / r) * (1 + r)) : corpus;
+  document.getElementById('fCorpus').innerText = inr(corpus);
+  document.getElementById('fSip').innerText = inr(sip) + '/mo';
+}
 
-  const ctx = document.getElementById('lsChart');
+function calcEMI() {
+  const P = parseFloat(document.getElementById('eAmt').value) || 0;
+  const r = (parseFloat(document.getElementById('eRate').value) || 0) / 12 / 100;
+  const n = (parseFloat(document.getElementById('eYrs').value) || 0) * 12;
+  const emi = r === 0 ? P / n : (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  const tot = emi * n;
+  document.getElementById('eEmi').innerText = inr(emi);
+  document.getElementById('eInt').innerText = inr(tot - P);
+  document.getElementById('eTot').innerText = inr(tot);
+}
+
+function drawChart(count, invFn, valFn) {
+  const ctx = document.getElementById('myChart');
   if (!ctx) return;
   if (activeChart) activeChart.destroy();
-
   activeChart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: Array.from({length: years + 1}, (_, i) => 'Yr ' + i),
+      labels: Array.from({length: count}, (_, i) => 'Yr ' + (i + 1)),
       datasets: [
-        {
-          label: 'Maturity Value',
-          data: Array.from({length: years + 1}, (_, i) => P * Math.pow(1 + r, i)),
-          borderColor: '#F0B429',
-          backgroundColor: '#F0B42933',
-          fill: true
-        }
+        { label: 'Invested', data: Array.from({length: count}, (_, i) => invFn(i)), borderColor: '#1A3A6B', backgroundColor: '#1A3A6B33', fill: true },
+        { label: 'Value', data: Array.from({length: count}, (_, i) => valFn(i)), borderColor: '#F0B429', backgroundColor: '#F0B42933', fill: true }
       ]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
+      responsive: true, maintainAspectRatio: false,
       plugins: { legend: { labels: { color: '#fff' } } },
       scales: {
         x: { ticks: { color: '#aaa' }, grid: { color: 'rgba(255,255,255,0.05)' } },
@@ -402,7 +298,6 @@ function calculateLumpsum() {
   });
 }
 
-// Initial render
 renderCalculator();
 </script>
 </body>
