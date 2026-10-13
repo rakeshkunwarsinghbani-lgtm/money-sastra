@@ -50,6 +50,7 @@
   .calc-tab { background: transparent; color: rgba(255,255,255,.7); }
   .calc-tab[aria-selected="true"] { background: linear-gradient(135deg, #FFD54A 0%, #F0B429 55%, #C9901A 100%); color: #0A1730; }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
+  body.article-open { overflow: hidden; }
 </style>
 </head>
 <body class="font-body text-white antialiased">
@@ -115,31 +116,98 @@
         <p class="text-navy-900/70 mt-2">Evergreen guides on compounding, budgeting, and debt management.</p>
       </div>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-2xl border border-gold-200 shadow-sm">
-          <span class="px-3 py-1 bg-navy-900 text-gold-300 text-xs font-bold rounded-full">Compounding</span>
-          <h3 class="font-display font-bold text-lg mt-3 text-navy-900">Power of Compounding</h3>
-          <p class="text-sm text-navy-900/70 mt-2">Why starting early matters more than how much you invest initially.</p>
-        </div>
-        <div class="bg-white p-6 rounded-2xl border border-gold-200 shadow-sm">
-          <span class="px-3 py-1 bg-navy-900 text-gold-300 text-xs font-bold rounded-full">Budgeting</span>
-          <h3 class="font-display font-bold text-lg mt-3 text-navy-900">The 50-30-20 Rule</h3>
-          <p class="text-sm text-navy-900/70 mt-2">A foolproof framework to divide your income into needs, wants, and savings.</p>
-        </div>
-        <div class="bg-white p-6 rounded-2xl border border-gold-200 shadow-sm">
-          <span class="px-3 py-1 bg-navy-900 text-gold-300 text-xs font-bold rounded-full">Debt</span>
-          <h3 class="font-display font-bold text-lg mt-3 text-navy-900">Good Debt vs Bad Debt</h3>
-          <p class="text-sm text-navy-900/70 mt-2">How to stay clear of high-interest credit card traps and manage loans smartly.</p>
-        </div>
-      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="insightsGrid"></div>
     </div>
   </section>
 </main>
+
+<!-- ARTICLE READER OVERLAY -->
+<div id="articleOverlay" class="fixed inset-0 z-[60] hidden overflow-y-auto bg-gold-50 text-navy-900">
+  <div class="max-w-3xl mx-auto px-5 py-12" id="articleBody"></div>
+</div>
 
 <script>
 const inr = (n) => '₹' + Math.round(n).toLocaleString('en-IN');
 let currentTab = 'sip';
 let activeChart = null;
+
+const ARTICLES = [
+  {
+    id: 'compounding', icon: '🚀', category: 'Compounding', read: '6 min',
+    title: 'Power of Compounding: The 8th Wonder of Wealth',
+    excerpt: 'Why ₹10,000 a month can quietly become ₹1 crore — and why the last five years matter more than the first ten.',
+    body: `
+      <h2 class="text-2xl font-bold mt-6 mb-3">Understanding the Curve</h2>
+      <p class="mb-4">Albert Einstein allegedly called compounding the eighth wonder of the world. Money grows not in a straight line but along an exponential curve — flat for years, then skyrocketing vertically.</p>
+      <h2 class="text-2xl font-bold mt-6 mb-3">The Magic of Starting Early</h2>
+      <p class="mb-4">If you invest ₹10,000 per month at 12% annual return:</p>
+      <ul class="list-disc pl-5 mb-4 space-y-2">
+        <li><strong>In 10 years:</strong> Your ₹12 lakh investment becomes ~₹23 lakh.</li>
+        <li><strong>In 20 years:</strong> Your ₹24 lakh investment becomes ~₹1 crore.</li>
+        <li><strong>In 30 years:</strong> Your ₹36 lakh investment becomes ~₹3.5 crore.</li>
+      </ul>
+      <p>Time is your greatest asset in wealth building. Never interrupt compounding unnecessarily.</p>`
+  },
+  {
+    id: 'budget503020', icon: '🧾', category: 'Budgeting', read: '5 min',
+    title: 'The 50-30-20 Rule: Simple Budgeting Framework',
+    excerpt: 'One rule, three buckets, zero spreadsheets. How to divide every rupee of your salary so saving happens automatically.',
+    body: `
+      <h2 class="text-2xl font-bold mt-6 mb-3">The Three Simple Buckets</h2>
+      <p class="mb-4">Complex expense trackers often fail. The 50-30-20 rule divides your take-home pay into three straightforward portions:</p>
+      <ul class="list-disc pl-5 mb-4 space-y-2">
+        <li><strong>50% Needs:</strong> Rent, groceries, utilities, loan EMIs, and insurance.</li>
+        <li><strong>30% Wants:</strong> Dining out, shopping, subscriptions, and entertainment.</li>
+        <li><strong>20% Savings:</strong> Mutual funds, SIPs, emergency funds, and extra debt payments.</li>
+      </ul>
+      <p>Automate your 20% savings on salary day so you pay yourself first before spending on wants.</p>`
+  },
+  {
+    id: 'debttrap', icon: '🕳️', category: 'Debt', read: '6 min',
+    title: 'Debt Trap se Kaise Bachein? (Good Debt vs Bad Debt)',
+    excerpt: 'Har loan kharab nahi hota — aur har loan aapko azaad bhi nahi karta. Good debt vs bad debt ka difference samjhiye.',
+    body: `
+      <h2 class="text-2xl font-bold mt-6 mb-3">Good Debt vs Bad Debt</h2>
+      <p class="mb-4">Not all loans are evil. Good debt (like home loans or education loans) helps build assets or future earning capacity. Bad debt (like high-interest credit card revolving balances or luxury personal loans) destroys your net worth.</p>
+      <h2 class="text-2xl font-bold mt-6 mb-3">How to Escape Debt Traps</h2>
+      <ul class="list-disc pl-5 mb-4 space-y-2">
+        <li>List down all your loans and their interest rates.</li>
+        <li>Target high-interest credit card debt first (Avalanche method).</li>
+        <li>Stop taking new consumer EMIs for non-essential lifestyle upgrades.</li>
+      </ul>`
+  }
+];
+
+function renderInsights() {
+  const grid = document.getElementById('insightsGrid');
+  if (!grid) return;
+  grid.innerHTML = ARTICLES.map(a => `
+    <div onclick="openArticle('${a.id}')" class="bg-white p-6 rounded-2xl border border-gold-200 shadow-sm cursor-pointer hover:shadow-lg transition">
+      <span class="px-3 py-1 bg-navy-900 text-gold-300 text-xs font-bold rounded-full">${a.category}</span>
+      <h3 class="font-display font-bold text-lg mt-3 text-navy-900">${a.title}</h3>
+      <p class="text-sm text-navy-900/70 mt-2">${a.excerpt}</p>
+      <span class="inline-block mt-4 text-gold-700 font-bold text-sm">Read Article →</span>
+    </div>`).join('');
+}
+
+function openArticle(id) {
+  const a = ARTICLES.find(x => x.id === id);
+  if (!a) return;
+  document.getElementById('articleBody').innerHTML = `
+    <button onclick="closeArticle()" class="text-gold-700 font-bold mb-6 inline-block">← Back to Insights</button>
+    <span class="px-3 py-1 bg-navy-900 text-gold-300 text-xs font-bold rounded-full">${a.category}</span>
+    <h1 class="text-3xl font-extrabold text-navy-900 mt-3">${a.title}</h1>
+    <p class="text-navy-900/60 text-sm mt-1 mb-6">${a.read} read</p>
+    <div class="text-navy-900/80 leading-relaxed">${a.body}</div>
+  `;
+  document.getElementById('articleOverlay').classList.remove('hidden');
+  document.body.classList.add('article-open');
+}
+
+function closeArticle() {
+  document.getElementById('articleOverlay').classList.add('hidden');
+  document.body.classList.remove('article-open');
+}
 
 function switchTab(tab) {
   currentTab = tab;
@@ -212,7 +280,7 @@ function renderCalculator() {
       <div class="grid grid-cols-3 gap-3">
         <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Monthly EMI</p><p id="eEmi" class="font-bold text-white mt-1">₹0</p></div>
         <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Total Interest</p><p id="eInt" class="font-bold text-gold-400 mt-1">₹0</p></div>
-        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Total Payment</p><p id="eTot" class="font-bold text-gold-300 mt-1">₹0</p></div>
+        <div class="bg-navy-950/50 p-3 rounded-xl border border-white/10"><p class="text-xs text-white/50">Total Payment</p><p id="eTot" class="font-bold text-gold-300 mt-1">₹0/p></p></div>
       </div>`;
     calcEMI();
   }
@@ -299,6 +367,7 @@ function drawChart(count, invFn, valFn) {
 }
 
 renderCalculator();
+renderInsights();
 </script>
 </body>
 </html>
