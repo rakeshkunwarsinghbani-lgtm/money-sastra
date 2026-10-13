@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+window.contextInfo = {"files":[],"materials":[],"crafts":[]};
+// 处理锚点链接跳转（srcDoc iframe 中锚点链接默认行为不正确）
+document.addEventListener('click', function(e) {
+  var anchor = e.target.closest('a');
+  if (anchor) {
+    var href = anchor.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      e.preventDefault();
+      var targetId = href.slice(1);
+      var target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }
+});
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Money Sastra — Master Your Money, Build Real Wealth</title>
+<meta name="description" content="Money Sastra makes personal finance simple — free calculators for SIP, budgeting, retirement and debt, plus evergreen money insights in English & Hinglish." />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS (CDN) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          navy: {
+            950: '#071026',
+            900: '#0A1730',
+            800: '#0A1F44',
+            700: '#0D2A5C',
+            600: '#12294F',
+            500: '#1A3A6B'
+          },
+          gold: {
+            50:  '#FDF8EC',
+            100: '#FBEFCF',
+            300: '#FFD54A',
+            400: '#F7C33C',
+            500: '#F0B429',
+            600: '#D69E1E',
+            700: '#C9901A',
+            800: '#9A6C10'
+          }
+        },
+        fontFamily: {
+          display: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          body: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+        },
+        boxShadow: {
+          soft: '0 10px 30px -12px rgba(3, 10, 25, 0.45)',
+          lift: '0 22px 45px -18px rgba(240, 180, 41, 0.35)'
+        }
+      }
+    }
+  }
+</script>
+
+<!-- Chart.js (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { background-color: #0A1F44; }
+
+  /* Scroll-reveal */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1); }
+  .reveal.is-visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* Focus visibility for accessibility */
+  a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid #FFD54A;
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  /* Range slider styling */
+  input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 6px; border-radius: 999px;
+    background: linear-gradient(90deg, #F0B429 0%, #F0B429 var(--fill, 50%), #16325e var(--fill, 50%), #16325e 100%);
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: #FFD54A; border: 3px solid #0A1730;
+    box-shadow: 0 0 0 3px rgba(240,180,41,.25); transition: transform .15s ease;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.12); }
+  input[type="range"]::-moz-range-thumb {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #FFD54A; border: 3px solid #0A1730;
+  }
+
+  /* Number input: hide spinners for cleanliness */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type="number"] { -moz-appearance: textfield; }
+
+  /* Hero background motif */
+  .hero-grid {
+    background-image: radial-gradient(rgba(240,180,41,.16) 1px, transparent 1px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 100%);
+  }
+  .gold-text-gradient {
+    background: linear-gradient(95deg, #FFD54A 0%, #F0B429 55%, #C9901A 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, #FFD54A 0%, #F0B429 55%, #C9901A 100%);
+    color: #0A1730;
+  }
+  .btn-gold:hover { box-shadow: 0 18px 35px -14px rgba(240,180,41,.55); transform: translateY(-2px); }
+
+  /* Prose for article reading view */
+  .prose-ms h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; color: #0A1730; font-size: 1.375rem; line-height: 1.3; margin: 2rem 0 .65rem; letter-spacing: -.01em; }
+  .prose-ms h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; color: #0A1730; font-size: 1.1rem; margin: 1.5rem 0 .5rem; }
+  .prose-ms p { color: #33405a; line-height: 1.8; margin-bottom: 1rem; }
+  .prose-ms ul { margin: .5rem 0 1.15rem 0; padding-left: 0; list-style: none; }
+  .prose-ms ul li { color: #33405a; line-height: 1.7; margin-bottom: .5rem; padding-left: 1.6rem; position: relative; }
+  .prose-ms ul li::before { content: "▸"; position: absolute; left: .25rem; color: #C9901A; font-weight: 700; }
+  .prose-ms strong { color: #0A1730; font-weight: 700; }
+
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* ---------- Unified money tools card ---------- */
+  .calc-tab {
+    background: transparent;
+    color: rgba(255,255,255,.7);
+    border: 1px solid transparent;
+  }
+  .calc-tab:hover:not([aria-selected="true"]) {
+    background: rgba(255,255,255,.07);
+    color: #fff;
+  }
+  .calc-tab[aria-selected="true"] {
+    background: linear-gradient(135deg, #FFD54A 0%, #F0B429 55%, #C9901A 100%);
+    color: #0A1730;
+    border-color: rgba(255,213,74,.6);
+    box-shadow: 0 10px 26px -10px rgba(240,180,41,.75), 0 0 0 1px rgba(240,180,41,.18) inset;
+  }
+
+  /* Panel swap animation: cross-fade + fade-up */
+  @keyframes calcPanelIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .panel-swap { animation: calcPanelIn .32s cubic-bezier(.22,1,.36,1) both; }
+  @keyframes calcTileIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .tile-anim { animation: calcTileIn .34s cubic-bezier(.22,1,.36,1) both; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel-swap, .tile-anim { animation: none; }
+    #tabIndicator { transition: none; }
+  }
+
+  body.article-open { overflow: hidden; }
+</style>
+</head>
+<body class="font-body text-white antialiased selection:bg-gold-500 selection:text-navy-900">
+
+<!-- ============ STICKY NAVBAR ============ -->
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 border-b border-transparent">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 sm:h-20">
+      <!-- Logo -->
+      <a href="#home" class="flex items-center gap-2.5 shrink-0 group" aria-label="Money Sastra home">
+        <span class="relative grid place-items-center w-10 h-10 rounded-xl btn-gold font-display font-extrabold text-[15px] shadow-soft transition-transform group-hover:-translate-y-0.5">
+          MS
+          <span class="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-[2px] bg-navy-900/30 rounded-full"></span>
+        </span>
+        <span class="font-display font-extrabold text-lg sm:text-xl tracking-tight">Money <span class="gold-text-gradient">Sastra</span></span>
+      </a>
+
+      <!-- Desktop links -->
+      <div class="hidden md:flex items-center gap-1">
+        <a href="#home" class="px-3.5 py-2 text-sm font-medium text-white/75 hover:text-gold-300 transition rounded-lg">Home</a>
+        <a href="#calculators" class="px-3.5 py-2 text-sm font-medium text-white/75 hover:text-gold-300 transition rounded-lg">Calculators</a>
+        <a href="#insights" class="px-3.5 py-2 text-sm font-medium text-white/75 hover:text-gold-300 transition rounded-lg">Insights</a>
+        <a href="#about" class="px-3.5 py-2 text-sm font-medium text-white/75 hover:text-gold-300 transition rounded-lg">About</a>
+        <a href="#calculators" class="ml-3 px-5 py-2.5 rounded-xl btn-gold font-display font-bold text-sm transition-all duration-200">Explore Tools</a>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button id="navToggle" class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl border border-white/15 text-gold-300 hover:bg-white/5 transition" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg id="iconOpen" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg id="iconClose" class="w-6 h-6 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="md:hidden hidden pb-5">
+      <div class="flex flex-col gap-1 rounded-2xl bg-navy-700/80 backdrop-blur border border-white/10 p-2">
+        <a href="#home" class="mobile-link px-4 py-3 rounded-xl text-sm font-medium text-white/85 hover:bg-white/5 hover:text-gold-300 transition">Home</a>
+        <a href="#calculators" class="mobile-link px-4 py-3 rounded-xl text-sm font-medium text-white/85 hover:bg-white/5 hover:text-gold-300 transition">Calculators</a>
+        <a href="#insights" class="mobile-link px-4 py-3 rounded-xl text-sm font-medium text-white/85 hover:bg-white/5 hover:text-gold-300 transition">Insights</a>
+        <a href="#about" class="mobile-link px-4 py-3 rounded-xl text-sm font-medium text-white/85 hover:bg-white/5 hover:text-gold-300 transition">About</a>
+        <a href="#calculators" class="mobile-link mt-1 px-4 py-3 rounded-xl btn-gold font-display font-bold text-sm text-center">Explore Tools</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- ============ HERO ============ -->
+  <section id="home" class="relative overflow-hidden pt-28 sm:pt-36 pb-16 sm:pb-24">
+    <div class="absolute inset-0 hero-grid pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute -top-32 -right-24 w-[26rem] h-[26rem] rounded-full bg-gold-500/10 blur-3xl pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute top-40 -left-32 w-[22rem] h-[22rem] rounded-full bg-navy-500/40 blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+    <!-- Compounding curve motif -->
+    <svg class="absolute bottom-0 left-0 w-full h-40 sm:h-64 opacity-[0.22] pointer-events-none" viewBox="0 0 1200 260" fill="none" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 250 C 220 245, 380 220, 540 175 S 850 70, 1050 30 L 1200 18" stroke="#F0B429" stroke-width="3" stroke-linecap="round"/>
+      <path d="M0 258 C 220 253, 380 228, 540 183 S 850 78, 1050 38 L 1200 26" stroke="#F0B429" stroke-width="1.5" stroke-dasharray="6 8" opacity=".6"/>
+    </svg>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-gold-500/30 text-gold-300 text-xs sm:text-sm font-semibold tracking-wide">
+        <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse"></span>
+        Personal Finance, Simplified — English &amp; Hinglish
+      </span>
+
+      <h1 class="reveal mt-6 font-display font-extrabold tracking-tight text-5xl sm:text-6xl lg:text-7xl leading-[1.05]">
+        Money <span class="gold-text-gradient">Sastra</span>
+      </h1>
+
+      <p class="reveal mt-4 font-display font-bold text-lg sm:text-2xl lg:text-3xl text-gold-300 tracking-tight">
+        Master Your Money, Build Real Wealth.
+      </p>
+
+      <p class="reveal max-w-3xl mx-auto mt-6 text-base sm:text-lg text-white/75 leading-relaxed">
+        Wealth is not really about how much you earn — it is about how well you save, how smartly you invest,
+        and how long you let compounding work for you. Money Sastra breaks down budgeting rules, SIP maths and
+        long-term investing into simple steps you can actually follow.
+      </p>
+
+      <div class="reveal mt-9 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+        <a href="#calculators" class="w-full sm:w-auto px-7 py-3.5 rounded-xl btn-gold font-display font-bold text-[15px] transition-all duration-200 shadow-soft">Explore Calculators</a>
+        <a href="#insights" class="w-full sm:w-auto px-7 py-3.5 rounded-xl border border-gold-500/45 text-gold-300 hover:bg-gold-500/10 font-display font-bold text-[15px] transition-all duration-200">Read Insights</a>
+      </div>
+
+      <div class="reveal mt-10 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
+        <span class="px-4 py-2 rounded-full bg-navy-700/70 border border-white/10 text-xs sm:text-sm text-white/85">📊 5 Free Calculators</span>
+        <span class="px-4 py-2 rounded-full bg-navy-700/70 border border-white/10 text-xs sm:text-sm text-white/85">📚 10 Evergreen Guides</span>
+        <span class="px-4 py-2 rounded-full bg-navy-700/70 border border-white/10 text-xs sm:text-sm text-white/85">✅ 100% Free • No Signup</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CALCULATORS ============ -->
+  <section id="calculators" class="relative py-16 sm:py-24 bg-navy-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="reveal text-center max-w-2xl mx-auto">
+        <span class="text-gold-400 font-semibold text-sm tracking-[0.18em] uppercase">Money Tools</span>
+        <h2 class="mt-3 font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight">Interactive Calculators</h2>
+        <p class="mt-4 text-white/70">Move the sliders. See the maths. No signup, no spreadsheets.</p>
+      </div>
+
+      <!-- ===== Unified money tools card ===== -->
+      <div class="reveal mt-10 sm:mt-12 max-w-6xl mx-auto rounded-2xl bg-navy-800/70 border border-white/10 shadow-soft overflow-hidden backdrop-blur-sm">
+        <!-- Card header -->
+        <div class="px-5 sm:px-8 pt-6 sm:pt-7 pb-4 border-b border-white/10">
+          <div class="flex items-center gap-3">
+            <span class="grid place-items-center w-10 h-10 rounded-xl btn-gold font-display font-extrabold text-lg shrink-0" aria-hidden="true">₹</span>
+            <div>
+              <h3 class="font-display font-extrabold text-xl sm:text-2xl tracking-tight leading-tight">Money Tools</h3>
+              <p class="text-xs sm:text-sm text-white/55">Pick a calculator, drag the sliders, watch the numbers move.</p>
+            </div>
+          </div>
+
+          <!-- Horizontally-scrollable tab bar -->
+          <div class="mt-5 -mx-5 sm:-mx-8 px-5 sm:px-8">
+            <div class="relative">
+              <div id="calcTabs" role="tablist" aria-label="Financial calculators"
+                   class="flex flex-nowrap items-center gap-2 overflow-x-auto scrollbar-hide pb-2 -mb-2">
+              </div>
+              <span id="tabIndicator" aria-hidden="true"
+                    class="pointer-events-none absolute left-0 bottom-0 h-[3px] rounded-full bg-gradient-to-r from-gold-300 to-gold-600 transition-[transform,width] duration-300 ease-out opacity-0"
+                    style="transform:translateX(0);width:0"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card body: input panel + results panel -->
+        <div class="p-5 sm:p-8">
+          <div class="grid lg:grid-cols-5 gap-7 lg:gap-8">
+            <div id="calcInputPanel" class="lg:col-span-2"></div>
+            <div id="calcResultPanel" class="lg:col-span-3"></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-8 text-center text-xs sm:text-sm text-white/50">
+        <span class="text-gold-400/80 font-semibold">Disclaimer:</span> Estimates only; actual returns vary. Calculators assume returns are compounded and do not account for taxes, fees or market volatility.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ INSIGHTS ============ -->
+  <section id="insights" class="relative py-16 sm:py-24 bg-gold-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="reveal text-center max-w-2xl mx-auto">
+        <span class="text-gold-800 font-semibold text-sm tracking-[0.18em] uppercase">Insights</span>
+        <h2 class="mt-3 font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-navy-800">Money Sastra Reads</h2>
+        <p class="mt-4 text-navy-800/65">Ten evergreen guides on compounding, budgeting, debt and the mindset of wealth.</p>
+      </div>
+      <div id="insightsGrid" class="mt-12 grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="relative py-16 sm:py-24 bg-navy-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="aboutContent" class="reveal"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer id="footer" class="bg-navy-950 border-t border-white/10"></footer>
+
+<!-- ============ ARTICLE OVERLAY ============ -->
+<div id="articleOverlay" class="fixed inset-0 z-[60] hidden overflow-y-auto bg-gold-50" role="dialog" aria-modal="true" aria-label="Article reader">
+  <div class="sticky top-0 z-20 h-1 bg-navy-800/10 w-full"><div id="readingProgress" class="h-full w-0 bg-gradient-to-r from-gold-300 to-gold-600 transition-[width] duration-100"></div></div>
+  <div id="articleBody"></div>
+</div>
+
+<script>
+/* =========================================================
+   Money Sastra — app script
+   Stage 1: utilities, nav, scroll reveal, formatting.
+   Calculators, insights, article reader, about & footer
+   are added in the following stages.
+   ========================================================= */
+
+/* ---------- Utilities ---------- */
+const $  = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+/* Indian currency formatting: 1,00,000 style grouping */
+const inr = (num, decimals = 0) => {
+  const n = Number.isFinite(num) ? num : 0;
+  return '₹' + n.toLocaleString('en-IN', { maximumFractionDigits: decimals, minimumFractionDigits: decimals });
+};
+
+/* Compact Indian label: 12.5 L / 1.25 Cr */
+const inrCompact = (num) => {
+  const n = Number.isFinite(num) ? Math.abs(num) : 0;
+  const sign = num < 0 ? '-' : '';
+  if (n >= 1e7) return sign + '₹' + (n / 1e7).toFixed(2).replace(/\.00$/, '') + ' Cr';
+  if (n >= 1e5) return sign + '₹' + (n / 1e5).toFixed(2).replace(/\.00$/, '') + ' L';
+  if (n >= 1e3) return sign + '₹' + (n / 1e3).toFixed(1).replace(/\.0$/, '') + ' K';
+  return sign + '₹' + n.toFixed(0);
+};
+
+/* ---------- Navbar: scroll style + mobile menu ---------- */
+const navbar = $('#navbar');
+const onScrollNav = () => {
+  if (window.scrollY > 12) {
+    navbar.classList.add('bg-navy-900/80', 'backdrop-blur-xl', 'border-white/10', 'shadow-soft');
+  } else {
+    navbar.classList.remove('bg-navy-900/80', 'backdrop-blur-xl', 'border-white/10', 'shadow-soft');
+  }
+};
+window.addEventListener('scroll', onScrollNav, { passive: true });
+onScrollNav();
+
+const navToggle = $('#navToggle');
+const mobileMenu = $('#mobileMenu');
+navToggle.addEventListener('click', () => {
+  const isOpen = !mobileMenu.classList.contains('hidden');
+  mobileMenu.classList.toggle('hidden', isOpen);
+  $('#iconOpen').classList.toggle('hidden', !isOpen);
+  $('#iconClose').classList.toggle('hidden', isOpen);
+  navToggle.setAttribute('aria-expanded', String(!isOpen));
+});
+$$('.mobile-link').forEach(link => link.addEventListener('click', () => {
+  mobileMenu.classList.add('hidden');
+  $('#iconOpen').classList.remove('hidden');
+  $('#iconClose').classList.add('hidden');
+  navToggle.setAttribute('aria-expanded', 'false');
+}));
+
+/* ---------- Scroll reveal ---------- */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+function observeReveals(root = document) {
+  $$('.reveal:not(.is-visible)', root).forEach(el => revealObserver.observe(el));
+}
+observeReveals();
+
+/* ---------- Chart defaults ---------- */
+if (window.Chart) {
+  Chart.defaults.font.family = "'Inter', sans-serif";
+  Chart.defaults.color = 'rgba(255,255,255,.7)';
+  Chart.defaults.maintainAspectRatio = false;
+}
+const CHART_GOLD = '#F0B429', CHART_GOLD_LIGHT = '#FFD54A', CHART_NAVY = '#12294F', CHART_NAVY_LIGHT = '#1A3A6B';
+
+/* =========================================================
+   CALCULATOR FRAMEWORK
+   Tabs + panels are registered as objects; each calculator
+   provides a build() returning markup and a mount() that
+   wires inputs -> live recalculation -> chart rendering.
+   ========================================================= */
+const CALCS = [
+  { id: 'sip',      label: 'SIP',        short: 'SIP Wealth',       icon: '📈',
+    title: 'SIP Wealth Calculator', blurb: 'See how a small monthly SIP compounds into a large corpus.' },
+  { id: 'lumpsum',  label: 'Lumpsum',    short: 'Lumpsum',          icon: '💰',
+    title: 'Lumpsum Growth Calculator', blurb: 'One-time investment, left alone to compound.' },
+  { id: 'budget',   label: '50-30-20',   short: '50-30-20 Budget',  icon: '🧾',
+    title: '50-30-20 Budget Split Tool', blurb: 'The classic rule: half for needs, a third for wants, a fifth for your future.' },
+  { id: 'freedom',  label: 'Retirement', short: 'Freedom Number',   icon: '🏖️',
+    title: 'Financial Freedom Number', blurb: 'The corpus that pays your life without a salary.' },
+  { id: 'emi',      label: 'EMI',        short: 'Debt / EMI',       icon: '🏦',
+    title: 'Debt Payoff / EMI Calculator', blurb: "Know your EMI — and how much interest you're really paying." }
+];
+const chartRegistry = {};
+const panelBuilders = {};   // host = results panel container; writes tiles + chart into host
+let activeCalc = 'sip';
+let activePanelOrigin = 0;
+
+/* Shared markup helpers -------------------------------------- */
+const tabBtn = (c) => `
+  <button role="tab" id="tab-${c.id}" data-calc="${c.id}" aria-selected="false" aria-controls="calcResultPanel" tabindex="-1"
+    title="${c.short}"
+    class="calc-tab shrink-0 inline-flex items-center px-4 sm:px-5 py-2.5 rounded-xl font-display font-semibold text-sm transition-all duration-200 whitespace-nowrap">
+    <span class="mr-1.5" aria-hidden="true">${c.icon}</span>${c.label}
+  </button>`;
+
+/* A labelled input row = slider + number input, kept in sync */
+const field = ({ id, label, hint = '', min, max, step, value, prefix = '', suffix = '', fmt = (v) => v }) => `
+  <div class="mb-6">
+    <div class="flex items-baseline justify-between gap-3 flex-wrap mb-2.5">
+      <label for="${id}-num" class="text-sm font-semibold text-white/85">${label}</label>
+      <div class="flex items-center gap-1.5">
+        ${prefix ? `<span class="text-gold-400 font-semibold text-sm">${prefix}</span>` : ''}
+        <input id="${id}-num" type="number" inputmode="decimal" value="${value}" min="${min}" max="${max}" step="${step}"
+          aria-label="${label} (number input)"
+          class="w-28 px-3 py-1.5 rounded-lg bg-navy-950/60 border border-white/15 text-right font-display font-bold text-gold-300 text-sm num-input" />
+        ${suffix ? `<span class="text-white/55 text-sm font-medium">${suffix}</span>` : ''}
+      </div>
+    </div>
+    <input id="${id}-rng" type="range" min="${min}" max="${max}" step="${step}" value="${value}"
+      aria-label="${label} (slider)" class="range" />
+    ${hint ? `<p class="mt-2 text-xs text-white/45">${hint}</p>` : ''}
+  </div>`;
+
+/* Result tile */
+const tile = (label, value, tone = 'gold', sub = '') => `
+  <div class="rounded-xl bg-navy-950/45 border border-white/10 p-3.5">
+    <p class="text-[11px] uppercase tracking-wider text-white/50 font-semibold">${label}</p>
+    <p class="mt-1 font-display font-extrabold text-lg sm:text-xl ${tone === 'gold' ? 'text-gold-300' : tone === 'white' ? 'text-white' : 'text-gold-400/90'} break-words">${value}</p>
+    ${sub ? `<p class="mt-0.5 text-[11px] text-white/45">${sub}</p>` : ''}
+  </div>`;
+
+/* Per-calculator remembered input values (keyed by field id) */
+const calcState = {};
+
+/* Wire a slider + number input pair; calls onInput(rawValue).
+   Values are remembered across tab switches via calcState. */
+function bindPair(id, onChange) {
+  const num = $(`#${id}-num`), rng = $(`#${id}-rng`);
+  if (!num || !rng) return null;
+  const clamp = (v) => {
+    const lo = Number(rng.min), hi = Number(rng.max);
+    return Math.min(hi, Math.max(lo, Number.isFinite(v) ? v : lo));
+  };
+  /* Restore a previously used value for this calculator */
+  const remembered = calcState[id];
+  if (remembered != null) {
+    const r = clamp(remembered);
+    num.value = r; rng.value = r;
+  }
+  const paint = () => {
+    const pct = ((Number(rng.value) - Number(rng.min)) / (Number(rng.max) - Number(rng.min))) * 100;
+    rng.style.setProperty('--fill', pct + '%');
+  };
+  const remember = () => { calcState[id] = Number(rng.value); };
+  const emit = () => { paint(); remember(); onChange(Number(rng.value)); };
+  rng.addEventListener('input', () => { num.value = rng.value; emit(); });
+  num.addEventListener('input', () => {
+    if (num.value === '' || num.value === '-') return;
+    const v = clamp(Number(num.value));
+    rng.value = v; paint(); remember(); onChange(v);
+  });
+  num.addEventListener('blur', () => { const v = clamp(Number(num.value)); num.value = v; rng.value = v; emit(); });
+  paint();
+  return { get value() { return Number(rng.value); }, set(v) { const c = clamp(v); num.value = c; rng.value = c; emit(); } };
+}
+
+/* ---------- Animated (count-up) numbers ---------- */
+const animNums = new WeakMap();   // element -> { raf, from, to, fmt }
+
+/* Animate an element's text from its current value to `to` over ~350ms.
+   `fmt(n)` formats the intermediate value (defaults to the Indian ₹ format). */
+function animCount(el, to, fmt = (n) => inr(n), dur = 350) {
+  if (!el) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    el.textContent = fmt(to); return;
+  }
+  const numberMatch = String(el.textContent).replace(/[^0-9.\-]/g, '');
+  let from = parseFloat(numberMatch);
+  if (!Number.isFinite(from)) from = 0;
+
+  const prev = animNums.get(el);
+  if (prev && prev.raf) cancelAnimationFrame(prev.raf);
+  else if (prev && prev.pending != null) from = prev.pending;
+
+  const start = performance.now();
+  const step = (now) => {
+    const t = Math.min(1, (now - start) / dur);
+    const eased = 1 - Math.pow(1 - t, 3);   /* easeOutCubic */
+    animNums.set(el, { raf: null, pending: from + (to - from) * eased });
+    el.textContent = fmt(from + (to - from) * eased);
+    if (t < 1) animNums.set(el, { raf: requestAnimationFrame(step), pending: to });
+    else animNums.set(el, { raf: null, pending: to });
+  };
+  animNums.set(el, { raf: requestAnimationFrame(step), pending: to });
+}
+
+/* Register / render tabs + panels ----------------------------- */
+function initCalcTabs() {
+  $('#calcTabs').innerHTML = CALCS.map(tabBtn).join('');
+  $('.calc-tab').forEach(btn => {
+    btn.addEventListener('click', () => showCalc(btn.dataset.calc));
+    btn.addEventListener('keydown', onTabKeydown);
+  });
+  showCalc(activeCalc, true);
+  window.addEventListener('resize', () => moveIndicator(activeCalc));
+  const bar = $('#calcTabs');
+  bar && bar.addEventListener('scroll', () => moveIndicator(activeCalc), { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => moveIndicator(activeCalc));
+}
+
+/* Arrow / Home / End keyboard navigation between tabs */
+function onTabKeydown(e) {
+  const keys = ['ArrowRight', 'ArrowLeft', 'Home', 'End'];
+  if (!keys.includes(e.key)) return;
+  e.preventDefault();
+  const ids = CALCS.map(c => c.id);
+  let i = ids.indexOf(activeCalc);
+  if (e.key === 'ArrowRight') i = (i + 1) % ids.length;
+  else if (e.key === 'ArrowLeft') i = (i - 1 + ids.length) % ids.length;
+  else if (e.key === 'Home') i = 0;
+  else i = ids.length - 1;
+  showCalc(ids[i]);
+  const next = $(`#tab-${ids[i]}`);
+  next && next.focus();
+}
+
+/* Slide the gold underline indicator under the active tab */
+function moveIndicator(id) {
+  const btn = $(`#tab-${id}`), ind = $('#tabIndicator'), bar = $('#calcTabs');
+  if (!btn || !ind || !bar) return;
+  const w = btn.offsetWidth;
+  const x = btn.offsetLeft - bar.scrollLeft;
+  ind.style.width = w + 'px';
+  ind.style.transform = `translateX(${x}px)`;
+  ind.style.opacity = '1';
+}
+
+/* Called by each calculator to (re)build its input controls in the shared input panel */
+function buildInputs(html) {
+  $('#calcInputPanel').innerHTML = html;
+}
+
+/* Called by each calculator to (re)build its result tiles + chart in the shared results panel */
+function buildResults(html) {
+  $('#calcResultPanel').innerHTML = html;
+  $('#calcResultPanel .tile-anim').forEach((el, i) => { el.style.animationDelay = (i * 45) + 'ms'; });
+}
+
+function showCalc(id, force = false) {
+  if (!panelBuilders[id]) return;
+  if (!force && activeCalc === id) return;
+  activeCalc = id;
+
+  $('.calc-tab').forEach(btn => {
+    btn.setAttribute('aria-selected', String(btn.dataset.calc === id));
+    btn.setAttribute('tabindex', btn.dataset.calc === id ? '0' : '-1');
+  });
+  moveIndicator(id);
+  /* Keep the active tab visible in the horizontally-scrollable bar */
+  const activeBtn = $(`#tab-${id}`);
+  if (activeBtn && activeBtn.scrollIntoView) {
+    try { activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); } catch (e) { /* noop */ }
+    setTimeout(() => moveIndicator(id), 320);
+  }
+  /* Fade the panel body out quickly, then rebuild and let the CSS
+     keyframe animate the new content in (cross-fade + fade-up). */
+  const inputPanel = $('#calcInputPanel'), resultPanel = $('#calcResultPanel');
+  const panels = [inputPanel, resultPanel];
+
+  const build = () => {
+    panelBuilders[id](resultPanel);
+    panels.forEach((p, i) => {
+      p.style.transition = '';
+      p.style.opacity = '';
+      p.style.transform = '';
+      p.style.transitionDelay = '';
+      p.classList.remove('panel-swap');
+      void p.offsetWidth;                      /* force reflow to restart animation */
+      p.style.animationDelay = (i * 55) + 'ms';
+      p.classList.add('panel-swap');
+    });
+    moveIndicator(id);
+  };
+
+  if (force || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    panels.forEach(p => { p.style.transition = 'none'; p.style.opacity = ''; p.style.transform = ''; });
+    build();
+  } else {
+    panels.forEach(p => {
+      p.classList.remove('panel-swap');
+      p.style.transition = 'opacity .16s ease, transform .16s ease';
+      p.style.opacity = '0';
+      p.style.transform = 'translateY(8px)';
+    });
+    clearTimeout(activePanelOrigin);
+    activePanelOrigin = setTimeout(build, 160);
+  }
+}
+
+/* Thin alias so calculators can call the persistent-chart builder */
+function buildChartCard(canvasId, title, height = 'h-64') {
+  return chartCardDef(canvasId, title, height);
+}
+
+/* Shared chart card wrapper — canvas is re-created per active tab */
+const chartCardDef = (canvasId, title, height = 'h-64') => `
+  <div class="rounded-2xl bg-navy-700/45 border border-white/10 p-4 sm:p-5">
+    <p class="text-sm font-semibold text-white/75 mb-3">${title}</p>
+    <div class="${height} relative"><canvas id="${canvasId}" aria-label="${title}" role="img"></canvas></div>
+  </div>`;
+
+/* =========================================================
+   (a) SIP WEALTH CALCULATOR  — monthly compounding
+   ========================================================= */
+panelBuilders.sip = () => {
+  const meta = CALCS.find(c => c.id === 'sip');
+  buildInputs(`
+    <h3 class="font-display font-bold text-xl mb-1">${meta.title}</h3>
+    <p class="text-sm text-white/55 mb-6">${meta.blurb}</p>
+    ${field({ id: 'sipAmt', label: 'Monthly SIP amount', min: 500, max: 200000, step: 500, value: 10000, prefix: '₹' })}
+    ${field({ id: 'sipRet', label: 'Expected annual return', min: 1, max: 25, step: 0.5, value: 12, suffix: '% p.a.' })}
+    ${field({ id: 'sipYrs', label: 'Investment duration', min: 1, max: 40, step: 1, value: 20, suffix: 'years' })}
+  `);
+  buildResults(`
+    <div class="space-y-5">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        ${tile('Total Invested', '<span id="sipInvested" class="tile-anim">—</span>', 'white', 'your own contributions')}
+        ${tile('Estimated Returns', '<span id="sipGain" class="tile-anim">—</span>', 'gold', 'market gains')}
+        ${tile('Total Future Value', '<span id="sipTotal" class="tile-anim">—</span>', 'gold', 'at maturity')}
+      </div>
+      ${chartCardDef('sipChart', 'Wealth growth: invested vs portfolio value', 'h-64 sm:h-72')}
+      <p id="sipNote" class="text-xs text-white/50 leading-relaxed"></p>
+    </div>
+  `);
+
+  const amt = bindPair('sipAmt'), ret = bindPair('sipRet'), yrs = bindPair('sipYrs');
+  if (!amt || !ret || !yrs) return;
+
+  const recalc = () => {
+    const P = amt.value, annual = ret.value / 100, n = yrs.value;
+    const r = annual / 12, months = n * 12;
+    /* Future value of an annuity-due (SIP at start of month) */
+    const fv = r === 0 ? P * months : P * ((Math.pow(1 + r, months) - 1) / r) * (1 + r);
+    const invested = P * months;
+    const gain = Math.max(0, fv - invested);
+
+    animCount($('#sipInvested'), invested);
+    animCount($('#sipGain'), gain);
+    animCount($('#sipTotal'), fv);
+    $('#sipNote').innerHTML = `At <strong class="text-gold-300">${inr(P)}/month</strong> for <strong class="text-gold-300">${n} years</strong> at <strong class="text-gold-300">${ret.value}% p.a.</strong>, your money multiplies roughly <strong class="text-gold-300">${(fv / invested).toFixed(1)}×</strong>. Your contributions are just ${inrCompact(invested)} of the ${inrCompact(fv)} — the rest is compounding.`;
+
+    /* Growth curve data (yearly marks) */
+    const labels = ['Yr 1'], investedSeries = [P * 12], valueSeries = [fvAt(P, r, 12)];
+    function fvAt(P, r, m) { return r === 0 ? P * m : P * ((Math.pow(1 + r, m) - 1) / r) * (1 + r); }
+    for (let y = 2; y <= n; y++) { labels.push('Yr ' + y); investedSeries.push(P * 12 * y); valueSeries.push(fvAt(P, r, y * 12)); }
+
+    drawGrowthChart('sipChart', labels, [
+      { label: 'Invested', data: investedSeries, color: CHART_NAVY_LIGHT },
+      { label: 'Portfolio value', data: valueSeries, color: CHART_GOLD }
+    ]);
+  };
+  [amt, ret, yrs].forEach(b => b && b.set(Number(b.value))); // initial paint fires recalc
+};
+
+/* =========================================================
+   (c) LUMPSUM GROWTH CALCULATOR
+   ========================================================= */
+panelBuilders.lumpsum = () => {
+  const meta = CALCS.find(c => c.id === 'lumpsum');
+  buildInputs(`
+    <h3 class="font-display font-bold text-xl mb-1">${meta.title}</h3>
+    <p class="text-sm text-white/55 mb-6">${meta.blurb}</p>
+    ${field({ id: 'lsAmt', label: 'One-time investment', min: 10000, max: 10000000, step: 10000, value: 500000, prefix: '₹' })}
+    ${field({ id: 'lsRet', label: 'Expected annual return', min: 1, max: 25, step: 0.5, value: 12, suffix: '% p.a.' })}
+    ${field({ id: 'lsYrs', label: 'Duration', min: 1, max: 40, step: 1, value: 15, suffix: 'years' })}
+  `);
+  buildResults(`
+    <div class="space-y-5">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        ${tile('Invested', '<span id="lsInvested" class="tile-anim">—</span>', 'white')}
+        ${tile('Estimated Returns', '<span id="lsGain" class="tile-anim">—</span>', 'gold')}
+        ${tile('Maturity Value', '<span id="lsTotal" class="tile-anim">—</span>', 'gold')}
+      </div>
+      ${chartCardDef('lsChart', 'Compounding growth over the years', 'h-64 sm:h-72')}
+      <p id="lsNote" class="text-xs text-white/50 leading-relaxed"></p>
+    </div>
+  `);
+
+  const amt = bindPair('lsAmt'), ret = bindPair('lsRet'), yrs = bindPair('lsYrs');
+  if (!amt || !ret || !yrs) return;
+
+  const recalc = () => {
+    const P = amt.value, r = ret.value / 100, n = yrs.value;
+    const fv = P * Math.pow(1 + r, n), gain = fv - P;
+    animCount($('#lsInvested'), P);
+    animCount($('#lsGain'), gain);
+    animCount($('#lsTotal'), fv);
+    const doubled = r > 0 ? Math.log(2) / Math.log(1 + r) : 0;
+    $('#lsNote').innerHTML = `Your money grows <strong class="text-gold-300">${(fv / P).toFixed(2)}×</strong> in ${n} years. At this rate it roughly <strong class="text-gold-300">doubles every ${doubled.toFixed(1)} years</strong> (Rule of 72 ≈ ${(72 / ret.value).toFixed(1)} yrs).`;
+
+    const labels = [], data = [];
+    for (let y = 0; y <= n; y++) { labels.push('Yr ' + y); data.push(P * Math.pow(1 + r, y)); }
+    drawGrowthChart('lsChart', labels, [{ label: 'Value', data, color: CHART_GOLD, fill: true }]);
+  };
+  [amt, ret, yrs].forEach(b => b && b.set(Number(b.value)));
+};
+
+/* =========================================================
+   (b) 50-30-20 BUDGET SPLIT TOOL
+   ========================================================= */
+panelBuilders.budget = () => {
+  const meta = CALCS.find(c => c.id === 'budget');
+  buildInputs(`
+    <h3 class="font-display font-bold text-xl mb-1">${meta.title}</h3>
+    <p class="text-sm text-white/55 mb-6">${meta.blurb}</p>
+    ${field({ id: 'budIncome', label: 'Monthly take-home income', min: 5000, max: 1000000, step: 5000, value: 75000, prefix: '₹' })}
+    <div class="rounded-xl bg-gold-500/10 border border-gold-500/25 p-4 mt-2">
+      <p class="text-xs text-white/70 leading-relaxed">Enter your <strong class="text-gold-300">in-hand</strong> salary (after tax & PF), not your CTC — budgeting only works on money you actually receive.</p>
+    </div>
+  `);
+  buildResults(`
+    <div class="space-y-5">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        ${tile('Needs — 50%', '<span id="budNeeds" class="tile-anim">—</span>', 'white', 'rent, food, EMIs, bills')}
+        ${tile('Wants — 30%', '<span id="budWants" class="tile-anim">—</span>', 'gold', 'dining, travel, shopping')}
+        ${tile('Savings — 20%', '<span id="budSave" class="tile-anim">—</span>', 'gold', 'SIPs, emergency fund')}
+      </div>
+      <div class="grid sm:grid-cols-2 gap-5 items-center">
+        ${chartCardDef('budChart', 'Where your money goes', 'h-60')}
+        <div class="space-y-3">
+          <div class="rounded-xl bg-navy-950/45 border border-white/10 p-3.5">
+            <p class="text-sm font-bold text-white flex items-center gap-2">🏠 Needs</p>
+            <p class="text-xs text-white/60 mt-1 leading-relaxed">Non-negotiable: rent, groceries, utilities, insurance, minimum EMIs. If needs cross 50%, trim rent or refi the loan — this is where stress hides.</p>
+          </div>
+          <div class="rounded-xl bg-navy-950/45 border border-white/10 p-3.5">
+            <p class="text-sm font-bold text-white flex items-center gap-2">🍿 Wants</p>
+            <p class="text-xs text-white/60 mt-1 leading-relaxed">Life still has to be fun. OTT, eating out, gadgets — spend freely within 30%, guilt-free and never on credit.</p>
+          </div>
+          <div class="rounded-xl bg-navy-950/45 border border-white/10 p-3.5">
+            <p class="text-sm font-bold text-white flex items-center gap-2">🌱 Savings &amp; Investing</p>
+            <p class="text-xs text-white/60 mt-1 leading-relaxed">Pay yourself first. Automate a SIP on salary day so the 20% leaves before you can spend it.</p>
+          </div>
+        </div>
+      </div>
+      <p id="budNote" class="text-xs text-white/50 leading-relaxed"></p>
+    </div>
+  `);
+
+  const inc = bindPair('budIncome');
+  if (!inc) return;
+  const recalc = () => {
+    const I = inc.value;
+    const needs = I * 0.5, wants = I * 0.3, save = I * 0.2;
+    animCount($('#budNeeds'), needs);
+    animCount($('#budWants'), wants);
+    animCount($('#budSave'), save);
+    $('#budNote').innerHTML = `At ${inr(I)}/month you can invest <strong class="text-gold-300">${inr(save)}</strong> each month. If you SIP that amount at 12% for 20 years, it could grow to about <strong class="text-gold-300">${inrCompact(fvOfSip(save, 0.12 / 12, 240))}</strong> — just from following one simple rule.`;
+
+    upsertChart('budChart', {
+      type: 'doughnut',
+      data: {
+        labels: ['Needs 50%', 'Wants 30%', 'Savings 20%'],
+        datasets: [{ data: [needs, wants, save], backgroundColor: [CHART_GOLD_LIGHT, CHART_GOLD, CHART_NAVY_LIGHT], borderColor: '#0A1730', borderWidth: 3, hoverOffset: 8 }]
+      },
+      options: {
+        cutout: '64%',
+        plugins: {
+          legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,.8)', boxWidth: 12, padding: 14, usePointStyle: true } },
+          tooltip: { callbacks: { label: (c) => ' ' + c.label + ': ' + inr(c.raw) } }
+        }
+      }
+    });
+  };
+  inc && inc.set(Number(inc.value));
+};
+
+/* Shared SIP future value helper */
+function fvOfSip(P, r, months) { return r === 0 ? P * months : P * ((Math.pow(1 + r, months) - 1) / r) * (1 + r); }
+
+/* ---------- Chart helpers ---------- */
+/* Each tab rebuilds its own <canvas>; we destroy the previous chart for the
+   same canvas id and let Chart.js animate in the new dataset/type (~500ms). */
+function upsertChart(canvasId, config) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || !window.Chart) return;
+  if (chartRegistry[canvasId]) { chartRegistry[canvasId].destroy(); delete chartRegistry[canvasId]; }
+  const cfg = Object.assign({}, config);
+  cfg.options = Object.assign({}, config.options, {
+    responsive: true,
+    animation: Object.assign({ duration: 520, easing: 'easeOutQuart' }, (config.options && config.options.animation) || {}),
+    transitions: Object.assign({ active: { animation: { duration: 240 } } }, (config.options && config.options.transitions) || {})
+  });
+  chartRegistry[canvasId] = new Chart(canvas, cfg);
+}
+
+function drawGrowthChart(canvasId, labels, series) {
+  upsertChart(canvasId, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: series.map(s => ({
+        label: s.label, data: s.data,
+        borderColor: s.color, backgroundColor: s.color + '33',
+        fill: s.fill ? 'origin' : false,
+        tension: 0.35, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 4
+      }))
+    },
+    options: {
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', align: 'end', labels: { color: 'rgba(255,255,255,.8)', boxWidth: 10, usePointStyle: true, padding: 14 } },
+        tooltip: { backgroundColor: '#071026', borderColor: 'rgba(240,180,41,.35)', borderWidth: 1, padding: 10, callbacks: { label: (c) => ' ' + c.dataset.label + ': ' + inr(c.raw) } }
+      },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: 'rgba(255,255,255,.45)', maxTicksLimit: 8, font: { size: 10 } } },
+        y: { grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: 'rgba(255,255,255,.45)', font: { size: 10 }, callback: (v) => inrCompact(v) } }
+      }
+    }
+  });
+}
+
+/* =========================================================
+   (d) FINANCIAL FREEDOM / RETIREMENT NUMBER CALCULATOR
+   Approach: inflate today's monthly expenses to retirement,
+   then capitalise with the safe real-return factor:
+        corpus = annualExpensesAtRetirement / (postRetReturn - inflation)
+   ========================================================= */
+panelBuilders.freedom = () => {
+  const meta = CALCS.find(c => c.id === 'freedom');
+  buildInputs(`
+    <h3 class="font-display font-bold text-xl mb-1">${meta.title}</h3>
+    <p class="text-sm text-white/55 mb-6">${meta.blurb}</p>
+    ${field({ id: 'ffExpense', label: "Today's monthly expenses", min: 10000, max: 500000, step: 5000, value: 60000, prefix: '₹' })}
+    ${field({ id: 'ffInfl', label: 'Inflation rate', min: 3, max: 10, step: 0.5, value: 6, suffix: '% p.a.' })}
+    ${field({ id: 'ffPostRet', label: 'Post-retirement return', min: 4, max: 14, step: 0.5, value: 9, suffix: '% p.a.', hint: 'Typically lower — a conservative debt-heavy portfolio.' })}
+    ${field({ id: 'ffAge', label: 'Current age', min: 18, max: 65, step: 1, value: 30, suffix: 'years' })}
+    ${field({ id: 'ffRetAge', label: 'Target freedom age', min: 30, max: 75, step: 1, value: 55, suffix: 'years' })}
+  `);
+  buildResults(`
+    <div class="space-y-5">
+      <div class="rounded-2xl bg-gradient-to-br from-gold-500/20 to-gold-700/5 border border-gold-500/35 p-5 text-center">
+        <p class="text-xs uppercase tracking-[0.16em] text-gold-300/90 font-bold">Your Freedom Number</p>
+        <p id="ffCorpus" class="mt-2 font-display font-extrabold text-3xl sm:text-5xl gold-text-gradient leading-tight">—</p>
+        <p id="ffCorpusSub" class="mt-2 text-xs sm:text-sm text-white/60"></p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        ${tile('Years to Freedom', '<span id="ffYears" class="tile-anim">—</span>', 'white')}
+        ${tile('Monthly Investment', '<span id="ffSip" class="tile-anim">—</span>', 'gold', 'SIP needed @12% p.a.')}
+        ${tile('Expenses Then', '<span id="ffExpFuture" class="tile-anim">—</span>', 'gold', 'per month, inflated')}
+      </div>
+      ${chartCardDef('ffChart', 'Corpus build-up towards your freedom number', 'h-60 sm:h-72')}
+      <div class="rounded-xl bg-navy-950/45 border border-white/10 p-4">
+        <p class="text-[11px] uppercase tracking-wider text-gold-400 font-bold mb-1.5">Assumptions used</p>
+        <p id="ffNote" class="text-xs text-white/55 leading-relaxed"></p>
+      </div>
+    </div>
+  `);
+
+  const exp = bindPair('ffExpense'), infl = bindPair('ffInfl'), pr = bindPair('ffPostRet'),
+        age = bindPair('ffAge'), retAge = bindPair('ffRetAge');
+  if (!exp || !infl || !pr || !age || !retAge) return;
+
+  const recalc = () => {
+    /* Keep target age ahead of current age */
+    const a = age.value, target = Math.max(retAge.value, a + 1);
+    const years = target - a;
+    const i = infl.value / 100, r = pr.value / 100;
+    const expNow = exp.value;
+    const expFutureMonthly = expNow * Math.pow(1 + i, years);
+    const annualFuture = expFutureMonthly * 12;
+    const spread = r - i;
+
+    let corpus;
+    if (spread <= 0.005) {
+      /* Real return ~0: use a 30x annual-expenses fallback and flag it */
+      corpus = annualFuture * 30;
+    } else {
+      corpus = annualFuture / spread;
+    }
+
+    /* SIP required at 12% p.a. to hit corpus in `years` */
+    const sipReturn = 0.12 / 12, months = years * 12;
+    const sipNeeded = months > 0
+      ? corpus / (((Math.pow(1 + sipReturn, months) - 1) / sipReturn) * (1 + sipReturn))
+      : corpus;
+
+    animCount($('#ffCorpus'), corpus);
+    $('#ffCorpusSub').innerHTML = `That's <strong class="text-gold-300">${inrCompact(corpus)}</strong> — built by age <strong class="text-gold-300">${target}</strong> (${years} years from now).`;
+    $('#ffYears').textContent = years + (years === 1 ? ' year' : ' years');
+    animCount($('#ffSip'), sipNeeded, (n) => inr(n) + '/mo');
+    animCount($('#ffExpFuture'), expFutureMonthly);
+
+    const warn = spread <= 0.005
+      ? ` Post-retirement return is close to inflation, so we used a conservative <strong class="text-gold-300">30× annual expense</strong> rule instead of the spread formula.`
+      : '';
+    $('#ffNote').innerHTML = `Expenses today of ${inr(expNow)}/month grow at ${infl.value}% inflation to <strong class="text-gold-300">${inr(expFutureMonthly)}/month</strong> (= ${inrCompact(annualFuture)}/year) by age ${target}. Corpus = annual expenses ÷ (post-retirement return ${pr.value}% − inflation ${infl.value}%) = ${inrCompact(annualFuture)} ÷ ${(spread * 100).toFixed(1)}%.${warn} The monthly figure is the SIP you'd need from today at 12% p.a. equity returns.`;
+
+    /* Chart: invested vs corpus trajectory to target */
+    const labels = [], corpusS = [];
+    const step = Math.max(1, Math.round(years / 12));
+    for (let y = 0; y <= years; y += step) {
+      labels.push('Age ' + (a + y));
+      const m = y * 12;
+      corpusS.push(sipNeeded * ((Math.pow(1 + sipReturn, m) - 1) / sipReturn) * (1 + sipReturn));
+    }
+    if ((years % step) !== 0) {
+      labels.push('Age ' + target);
+      const m = years * 12;
+      corpusS.push(sipNeeded * ((Math.pow(1 + sipReturn, m) - 1) / sipReturn) * (1 + sipReturn));
+    }
+    drawGrowthChart('ffChart', labels, [{ label: 'Projected corpus', data: corpusS, color: CHART_GOLD, fill: true }]);
+  };
+  [exp, infl, pr, age, retAge].forEach(b => b && b.set(Number(b.value)));
+};
+
+/* =========================================================
+   (e) DEBT PAYOFF / EMI CALCULATOR  — standard amortisation
+   EMI = P·r·(1+r)^n / ((1+r)^n − 1)
+   ========================================================= */
+panelBuilders.emi = () => {
+  const meta = CALCS.find(c => c.id === 'emi');
+  buildInputs(`
+    <h3 class="font-display font-bold text-xl mb-1">${meta.title}</h3>
+    <p class="text-sm text-white/55 mb-6">${meta.blurb}</p>
+    ${field({ id: 'emiAmt', label: 'Loan amount', min: 50000, max: 10000000, step: 50000, value: 2500000, prefix: '₹' })}
+    ${field({ id: 'emiRate', label: 'Annual interest rate', min: 5, max: 20, step: 0.1, value: 8.5, suffix: '% p.a.' })}
+    ${field({ id: 'emiTenure', label: 'Tenure', min: 1, max: 30, step: 1, value: 20, suffix: 'years' })}
+  `);
+  buildResults(`
+    <div class="space-y-5">
+      <div class="rounded-2xl bg-gradient-to-br from-navy-500/40 to-navy-950/30 border border-white/12 p-5 text-center">
+        <p class="text-xs uppercase tracking-[0.16em] text-gold-300/90 font-bold">Monthly EMI</p>
+        <p id="emiOut" class="mt-2 font-display font-extrabold text-3xl sm:text-5xl text-white leading-tight">—</p>
+        <p id="emiOutSub" class="mt-2 text-xs sm:text-sm text-white/60"></p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        ${tile('Principal', '<span id="emiP" class="tile-anim">—</span>', 'white')}
+        ${tile('Total Interest', '<span id="emiInt" class="tile-anim">—</span>', 'gold')}
+        ${tile('Total Payment', '<span id="emiTot" class="tile-anim">—</span>', 'gold')}
+        ${tile('Interest Share', '<span id="emiShare" class="tile-anim">—</span>', 'gold')}
+      </div>
+      <div class="grid sm:grid-cols-2 gap-5 items-center">
+        ${chartCardDef('emiChart', 'Principal vs interest', 'h-60')}
+        <div class="space-y-3">
+          <div class="rounded-xl bg-navy-950/45 border border-white/10 p-4">
+            <p class="text-[11px] uppercase tracking-wider text-gold-400 font-bold mb-2">Year 1 amortisation</p>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between"><span class="text-white/65">Principal repaid</span><span id="emiY1P" class="font-display font-bold text-gold-300">—</span></div>
+              <div class="flex justify-between"><span class="text-white/65">Interest paid</span><span id="emiY1I" class="font-display font-bold text-gold-300">—</span></div>
+              <div class="w-full h-2.5 rounded-full bg-navy-500/60 overflow-hidden mt-1">
+                <div id="emiY1Bar" class="h-full bg-gradient-to-r from-gold-300 to-gold-600 transition-[width] duration-500" style="width:0%"></div>
+              </div>
+              <p class="text-[11px] text-white/45">Share of year-1 payments that reduced your loan balance.</p>
+            </div>
+          </div>
+          <p id="emiNote" class="text-xs text-white/50 leading-relaxed"></p>
+        </div>
+      </div>
+    </div>
+  `);
+
+  const amt = bindPair('emiAmt'), rate = bindPair('emiRate'), ten = bindPair('emiTenure');
+  if (!amt || !rate || !ten) return;
+
+  const recalc = () => {
+    const P = amt.value, annual = rate.value / 100, n = ten.value * 12, r = annual / 12;
+    const emi = r === 0 ? P / n : (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    const total = emi * n, interest = total - P, share = (interest / total) * 100;
+
+    /* Year-1 principal vs interest via month-by-month amortisation */
+    let bal = P, y1P = 0, y1I = 0;
+    const first12 = Math.min(12, n);
+    for (let m = 0; m < first12; m++) {
+      const interestM = bal * r;
+      const principalM = Math.min(emi - interestM, bal);
+      y1I += interestM; y1P += principalM; bal -= principalM;
+    }
+
+    animCount($('#emiOut'), emi);
+    $('#emiOutSub').innerHTML = `for <strong class="text-gold-300">${n}</strong> months at <strong class="text-gold-300">${rate.value}% p.a.</strong>`;
+    animCount($('#emiP'), P);
+    animCount($('#emiInt'), interest);
+    animCount($('#emiTot'), total);
+    animCount($('#emiShare'), share, (n) => n.toFixed(1) + '%');
+    animCount($('#emiY1P'), y1P);
+    animCount($('#emiY1I'), y1I);
+    $('#emiY1Bar').style.width = ((y1P / (y1P + y1I)) * 100).toFixed(1) + '%';
+    $('#emiNote').innerHTML = `You borrow <strong class="text-gold-300">${inrCompact(P)}</strong> and repay <strong class="text-gold-300">${inrCompact(total)}</strong>. Interest alone costs ${inrCompact(interest)} — that's ${((interest / P) * 100).toFixed(0)}% of the loan. In year 1, only ${((y1P / (y1P + y1I)) * 100).toFixed(0)}% of your payments reduced the balance.`;
+
+    upsertChart('emiChart', {
+      type: 'doughnut',
+      data: {
+        labels: ['Principal', 'Interest'],
+        datasets: [{ data: [P, interest], backgroundColor: [CHART_NAVY_LIGHT, CHART_GOLD], borderColor: '#0A1730', borderWidth: 3, hoverOffset: 8 }]
+      },
+      options: {
+        cutout: '64%',
+        plugins: {
+          legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,.8)', boxWidth: 12, padding: 14, usePointStyle: true } },
+          tooltip: { callbacks: { label: (c) => ' ' + c.label + ': ' + inr(c.raw) + ' (' + ((c.raw / total) * 100).toFixed(1) + '%)' } }
+        }
+      }
+    });
+  };
+  [amt, rate, ten].forEach(b => b && b.set(Number(b.value)));
+};
+
+/* Boot calculators */
+initCalcTabs();
+
+/* =========================================================
+   INSIGHTS — 10 evergreen articles
+   meta: category, read time, emoji; body: HTML string
+   ========================================================= */
+const ARTICLES = [
+  {
+    id: 'compounding', icon: '🚀', category: 'Compounding', read: '6 min',
+    title: 'Power of Compounding: The 8th Wonder of Wealth',
+    excerpt: 'Why ₹10,000 a month can quietly become ₹1 crore — and why the last five years matter more than the first ten.',
+    body: `
+<p>Albert Einstein may or may not have called compounding the eighth wonder of the world, but the numbers genuinely behave that way. Compounding is simply your returns earning their own returns. Money grows not in a straight line but along a curve — flat and boring for years, then suddenly almost vertical.</p>
+<h2>Start with a real example</h2>
+<p>Imagine you invest <strong>₹10,000 every month</strong> into an index fund and it delivers <strong>12% annual returns</strong>. Here is what happens over different time periods:</p>
+<ul>
+<li><strong>10 years:</strong> you invest ₹12 lakh → it becomes roughly ₹23 lakh.</li>
+<li><strong>20 years:</strong> you invest ₹24 lakh → it becomes roughly ₹99 lakh — about ₹1 crore.</li>
+<li><strong>30 years:</strong> you invest ₹36 lakh → it becomes roughly ₹3.5 crore.</li>
+</ul>
+<p>Notice the pattern. Doubling your time from 10 to 20 years does not double the corpus; it multiplies it roughly four times. Going from 20 to 30 years adds more wealth in that single decade than the entire first twenty years combined.</p>
+<h2>The maths of doubling: Rule of 72</h2>
+<p>Divide 72 by your expected return to know how many years your money needs to double. At 12%, that's <strong>6 years</strong>. At 8%, it's 9 years. At 15%, it's under 5 years. This one rule lets you sanity-check any investment pitch in your head.</p>
+<h2>Time beats timing — and beats the amount</h2>
+<p>Two investors, both at 12% returns:</p>
+<ul>
+<li><strong>Riya</strong> invests ₹10,000/month from age 25 to 35, then stops. Total invested: ₹12 lakh.</li>
+<li><strong>Arjun</strong> invests ₹10,000/month from age 35 to 60. Total invested: ₹30 lakh.</li>
+</ul>
+<p>At 60, Riya's corpus is often <em>larger</em> than Arjun's, despite investing far less. Her money just had more time to compound. The lesson is uncomfortable but true: the best day to start was yesterday; the second-best is today.</p>
+<h2>The three levers you control</h2>
+<ul>
+<li><strong>Amount:</strong> increase your SIP by just 10% every year. It compounds too.</li>
+<li><strong>Time:</strong> never break the chain. Consistency is the engine.</li>
+<li><strong>Cost &amp; behaviour:</strong> a 1% higher fund fee can eat lakhs over decades. Panic-selling in a crash is worse than any fee.</li>
+</ul>
+<h2>Why most people quit too early</h2>
+<p>In the first 5 years, the gains look tiny — the curve barely lifts off the ground. That is exactly when discipline matters. In the last 5 years, the curve goes almost vertical. Most people quit during the flat part and miss the vertical part.</p>
+<h2>Key takeaways</h2>
+<ul>
+<li>Compounding rewards <strong>time in the market</strong>, not timing the market.</li>
+<li>₹10,000/month at 12% can realistically reach ~₹1 crore in 20 years.</li>
+<li>Use the Rule of 72 (72 ÷ return) to estimate doubling time.</li>
+<li>Fees and panic-selling are the two biggest destroyers of compounding.</li>
+<li>Start small if you must — but start now, and keep increasing your SIP with income.</li>
+</ul>`
+  },
+  {
+    id: 'budget503020', icon: '🧾', category: 'Budgeting', read: '5 min',
+    title: 'The 50-30-20 Rule: Simple Budgeting Framework',
+    excerpt: 'One rule, three buckets, zero spreadsheets. How to divide every rupee of your salary so saving happens automatically.',
+    body: `
+<p>Most budgets fail because they are too complicated. The 50-30-20 rule is the opposite: three buckets, one decision. It was popularised by US Senator Elizabeth Warren, and it works just as well on an Indian salary.</p>
+<h2>The three buckets</h2>
+<ul>
+<li><strong>50% — Needs:</strong> rent or home loan EMI, groceries, utilities, transport, insurance premiums, school fees, minimum debt payments.</li>
+<li><strong>30% — Wants:</strong> eating out, OTT subscriptions, gadgets, travel, shopping, upgrades.</li>
+<li><strong>20% — Savings &amp; Investments:</strong> SIPs, mutual funds, PPF, emergency fund, extra loan prepayment.</li>
+</ul>
+<h2>A worked example</h2>
+<p>Say your take-home salary is <strong>₹75,000 per month</strong> (in-hand, after tax and PF). The split looks like this:</p>
+<ul>
+<li>Needs: ₹37,500 → e.g. ₹18,000 rent + ₹8,000 groceries + ₹4,000 utilities + ₹4,000 transport + ₹3,500 insurance.</li>
+<li>Wants: ₹22,500 → dining, travel, shopping, entertainment.</li>
+<li>Savings: ₹15,000 → ₹10,000 equity SIP + ₹3,000 emergency fund + ₹2,000 debt prepayment.</li>
+</ul>
+<p>That ₹15,000 invested monthly at 12% for 20 years becomes roughly <strong>₹1.49 crore</strong>. One rule, applied consistently, has now built a real portfolio.</p>
+<h2>Adapt it to your reality</h2>
+<p>The proportions are a starting point, not a law. High-cost metros often blow past 50% on needs. In that case:</p>
+<ul>
+<li>Try <strong>60-20-20</strong> if rent is heavy, or <strong>50-20-30</strong> if you're aggressively targeting early freedom.</li>
+<li>Never let the savings bucket drop below 15%. A smaller percentage of a growing salary still compounds.</li>
+</ul>
+<h2>Make it automatic</h2>
+<p>Budgeting fails on willpower, so remove it. On salary day, set standing instructions so the 20% leaves your account before you see it. What's left is genuinely yours to spend on needs and wants — guilt-free.</p>
+<h2>Track, don't obsess</h2>
+<p>A simple monthly review of your three totals beats an elaborate daily expense tracker. Check: did needs stay near 50%? Did I spend the full 30% on wants responsibly? Did my 20% actually get invested?</p>
+<h2>Key takeaways</h2>
+<ul>
+<li>Needs 50% · Wants 30% · Savings 20% — simple enough to actually follow.</li>
+<li>Budget on take-home pay, never on CTC.</li>
+<li>Automate savings on salary day — pay yourself first.</li>
+<li>Adapt the ratios to your city and goals, but protect at least 15% for savings.</li>
+<li>Review monthly in three numbers, not a hundred rows.</li>
+</ul>`
+  },
+  {
+    id: 'emergencyfund', icon: '🛡️', category: 'Mindset', read: '5 min',
+    title: 'Emergency Fund: Kyun Hai Ye Aapka Financial Shield?',
+    excerpt: 'Job chali jaye, medical emergency aa jaye — emergency fund aapka pehla defence hai. Kitna chahiye aur kidhar rakhna hai?',
+    body: `
+<p>Sabse pehla investment jo har kisi ko karna chahiye, wo share market nahi hai. Wo hai <strong>emergency fund</strong>. Ye ek aisa buffer hai jo aapko life ke surprises se bachata hai — bina loan lene, bina credit card ka sahaara lene, aur bina apne long-term investments todne ke.</p>
+<h2>Emergency fund kya hota hai?</h2>
+<p>Ye 3–6 mahine ke essential kharche jitna cash reserve hota hai jo turant available ho. Iska kaam return dena nahi, balki <strong>protection</strong> dena hai. Jab income ruk jaye, tab ye aapka pet bhar sakta hai.</p>
+<h2>Kitna paisa chahiye?</h2>
+<ul>
+<li><strong>Salaried, stable job:</strong> 3–4 mahine ke essential expenses.</li>
+<li><strong>Freelancer, business owner, ya single earner family:</strong> 6–9 mahine ke expenses.</li>
+<li><strong>Home loan ya dependents hain:</strong> 6 mahine ke expenses minimum.</li>
+</ul>
+<p>Example: Agar aapke essential monthly kharche <strong>₹40,000</strong> hain, to 6 mahine ka emergency fund <strong>₹2.4 lakh</strong> hoga.</p>
+<h2>Kahan rakhna chahiye?</h2>
+<ul>
+<li><strong>Savings account</strong> — liquidity best hai, par interest kam.</li>
+<li><strong>Liquid mutual fund / overnight fund</strong> — thoda zyada return, 1 din me withdrawal.</li>
+<li><strong>Short-term FD</strong> — safe, par break karne pe penalty lagti hai.</li>
+</ul>
+<p>Ye paisa equity mutual funds me mat rakho. Emergency ke waqt market crash me ho sakta hai — tab aapko loss pe bechna padega. Ye investment nahi, insurance hai.</p>
+<h2>Kaise build karein — step by step</h2>
+<ul>
+<li>Pehle 1 mahine ka fund banao — ye sabse mushkil step hai, isse momentum milta hai.</li>
+<li>Phir har mahine salary ka 10–20% dedicated account me daalo.</li>
+<li>Bonus, tax refund, ya extra income ka 50% seedha emergency fund me daalo.</li>
+<li>Target poora hone tak shares me naye investments thoda slow kar do — par bilkul band mat karo.</li>
+</ul>
+<h2>Kab use karna chahiye (aur kab nahi)?</h2>
+<p>Use karo: job loss, medical emergency, urgent home repair, unavoidable family travel. Use mat karo: iPhone upgrade, sale ki shopping, "market abhi sasta hai" — kyunki ye emergencies nahi, opportunities ya temptations hain. Aur use karne ke baad, sabse pehla kaam fund ko dobara bharna hai.</p>
+<h2>Key takeaways</h2>
+<ul>
+<li>3–6 mahine ke essential expenses = aapka emergency fund target.</li>
+<li>Freelancers aur single earners ke liye 6–9 mahine better hai.</li>
+<li>Sirf liquid, safe jagah rakhein — equity me kabhi nahi.</li>
+<li>Ye return ke liye nahi, survival ke liye hai.</li>
+<li>Use karne ke baad sabse pehle fund ko refill karein.</li>
+</ul>`
+  },
+  {
+    id: 'siplumpsum', icon: '⚖️', category: 'Investing', read: '6 min',
+    title: 'SIP vs Lumpsum: Kisme Invest Karna Behtar Hai?',
+    excerpt: 'Ek baar me bada paisa daalein ya har mahine thoda-thoda? Dono ke fayde, nuksaan, aur kab kya karna chahiye.',
+    body: `
+<p>Ye sawal har investor ke dimaag me aata hai: jo paisa hai, use ek saath invest kar dein (lumpsum) ya har mahine thoda-thoda (SIP)? Sach ye hai ki dono tarike sahi hain — bas situation alag hoti hai.</p>
+<h2>SIP kya hai?</h2>
+<p>SIP (Systematic Investment Plan) me aap har mahine ek fixed amount, sahi date pe, mutual fund me invest karte hain. Bank se auto-debit set kar do — aur investment ho gaya.</p>
+<h3>SIP ke fayde</h3>
+<ul>
+<li><strong>Rupee cost averaging:</strong> Market girne par zyada units milti hain, badhne par kam. Average purchase price behtar hota hai.</li>
+<li><strong>Discipline:</strong> Salary day pe paisa nikal jata hai — bhoolne ka sawal hi nahi.</li>
+<li><strong>Emotion control:</strong> Crash me aap khud decide nahi karte, system chalta rehta hai.</li>
+<li><strong>Chhote se shuru:</strong> ₹500/month se bhi shuru kar sakte hain.</li>
+</ul>
+<h3>SIP ki limitation</h3>
+<p>Agar market continuously up hi jaata raha, to lumpsum ne aapko zyada units de di hoti. SIP me paisa thoda late aata hai, isliye kuch upside miss hota hai.</p>
+<h2>Lumpsum kya hai?</h2>
+<p>Ek hi transaction me bada amount invest karna — bonus, maturity, ya property sale ka paisa.</p>
+<h3>Lumpsum ke fayde</h3>
+<ul>
+<li><strong>Zyada time in market:</strong> Paisa pehle din se kaam karta hai.</li>
+<li><strong>Bull market me behtar:</strong> Lambe samay me markets upar jaate hain, isliye early entry ka fayda milta hai.</li>
+</ul>
+<h3>Lumpsum ka risk</h3>
+<p>Agar aap galat time pe (market ke top pe) entry kar dete ho, to kamane me saalon lag sakte hain. Ek badi new purchase ke turant baad 30% ki drop me aapka poora capital gir jayega — aur aap bechain hokar bech bhi sakte ho.</p>
+<h2>Data kya kehta hai?</h2>
+<p>Studies aur data analysis aam taur pe dikhate hain ki long periods me lumpsum ne slightly zyada return di hai, kyunki markets ka natural drift upar ki taraf hota hai. Lekin ye <em>average</em> hai. Individual investor ke liye, risk-adjusted aur behaviour-adjusted, SIP aksar zyada practical nikalta hai.</p>
+<h2>Practical jawab: STP use karein</h2>
+<p>Agar aapke paas bada lumpsum hai aur aap volatility se darte hain, to <strong>STP (Systematic Transfer Plan)</strong> best hai. Pehle lakhs ko liquid fund me daalein, phir har mahine usse equity fund me transfer karte rahein (6–12 mahine me). Aapko dono ka fayda milta hai — thoda time in market aur SIP ka averaging.</p>
+<h2>Kab kya karein?</h2>
+<ul>
+<li><strong>Monthly salary hai:</strong> SIP. Simple.</li>
+<li><strong>Bonus/lumpsum aaya, market normal hai:</strong> 50–70% turant, baaki STP se.</li>
+<li><strong>Market me bada crash aaya:</strong> Agar emergency fund ready hai, to lumpsum ka sahi mauka hai.</li>
+<li><strong>Jitna saalon ke liye nahi chahiye:</strong> STP.</li>
+</ul>
+<h2>Key takeaways</h2>
+<ul>
+<li>SIP discipline deta hai; lumpsum time-in-market deta hai.</li>
+<li>Behtar method debate se zyada important hai <strong>consistency</strong>.</li>
+<li>Agar bada paisa hai aur darr hai, STP use karein.</li>
+<li>Crash me lumpsum ka fayda uthayein, par pehle emergency fund banayein.</li>
+<li>Sabse kharab decision hai — paisa savings account me pada chhod dena.</li>
+</ul>`
+  },
+  {
+    id: 'basantbaheti', icon: '📉', category: 'Investing', read: '6 min',
+    title: 'Basant Baheti Strategy: Badhe Companies me Trouble ke Waqt Invest Karna',
+    excerpt: 'Jab acchi company temporararily mushkil me ho, tab market use sasta kar deta hai. Basant Baheti style me value kaise dhundhein.',
+    body: `
+<p>Basant Baheti ek seasoned Indian investor hain jo "<strong>girte hue ko pakdo, par girne ki wajah samjho</strong>" wali philosophy follow karte hain — matlab aisi companies me invest karna jo fundamentally strong hain, par kisi temporary problem ki wajah se sasta ho gaya hain. Ise contrarian investing kehte hain.</p>
+<h2>Core idea kya hai?</h2>
+<p>Market do tarah ke news ko same tarike se punish karta hai: (a) temporary problem, aur (b) permanent damage. Smart investor in dono me fark karta hai. Temporary problem wali company ko sasta milna ek opportunity hai; permanent damage wali company sasti lagne wali trap hai.</p>
+<h2>Temporary problems kaise dikhte hain?</h2>
+<ul>
+<li>Ek quarter ka weak result — demand thodi kam, margin temporarily gir gayi.</li>
+<li>Naya plant ya expansion ka cost pangayaa, isliye profit kam dikha.</li>
+<li>Kisi sector ya regulation ka short-term shock (GST changes, one-time fine).</li>
+<li>Management change, ya succession issue — business waise hi chal raha hai.</li>
+<li>Overall market crash ki wajah se acchi company bhi sath me gir gayi.</li>
+</ul>
+<h2>Permanent damage kaise pehchanein?</h2>
+<ul>
+<li>Business model hi khatm ho raha hai (disruption se).</li>
+<li>Sales me consistent decline, sirf ek quarter nahi.</li>
+<li>Promoter quality, corporate governance ya debt numbers me serious red flags.</li>
+<li>Company apne customers ya employees ko repeatedly nuksan pahucha rahi ho.</li>
+</ul>
+<p>Pehli list me paisa kamane ke chances hain. Doosri list me loss ka bahut bada risk hai. Difference karne ke liye homework zaroori hai — tip sunna nahi.</p>
+<h2>Process — step by step</h2>
+<ul>
+<li><strong>Circle of competence:</strong> Sirf wahi sector dekho jo aap samajhte ho (BFSI, IT, FMCG, pharma, etc.).</li>
+<li><strong>Why cheap?</strong> Pehla sawal hamesha — kyun sasta hai? Agar jawab "sirf stock gir gaya" hai, aur business intact hai, aage badho.</li>
+<li><strong>Balance sheet check:</strong> Debt/equity reasonable? Cash flow positive? Promoter holding stable?</li>
+<li><strong>Valuation:</strong> Historical PE/PB range dekho. Agar koi stock apne 5-saal ke normal range se 30–50% neeche hai, aur business stable hai — ye ek candidate ho sakta hai.</li>
+<li><strong>Staggered buying:</strong> Ek saath poori position mat lo. 3–4 tranches me kharido, price aur details dono ke hisab se.</li>
+<li><strong>Patience:</strong> Recovery me 1–3 saal lag sakte hain. Ye investment hai, instant trade nahi.</li>
+</ul>
+<h2>Ek illustration</h2>
+<p>Maan lo ek strong bank hai, ROE 15%+, par ek one-time fraud-hit quarter ke kaaran stock 35% gir gaya. Agar management ne action liya hai, capital adequacy theek hai, aur deposit growth stable hai — to ye temporary problem ho sakta hai. 12–18 mahine baad, jab normalcy wapas aati hai, valuation re-rate ho sakta hai.</p>
+<p>Iske ulta, agar bank ka deposit base continuously shrink ho raha hai aur NPAs badh rahe hain, to "sasta" price permanent hai — aur probably aur sasta hoga.</p>
+<h2>Risks aur disclaimers</h2>
+<ul>
+<li>Ye aam investor ke liye advanced strategy hai. Aap galat ho sakte ho.</li>
+<li>Position sizing important hai — sirf 3–5% portfolio har contrarian bet me.</li>
+<li>Stop-loss ya thesis-break rule pehle tay karo.</li>
+<li>Time horizon 2–3 saal minimum. Agar short-term trader ho, ye aapke liye nahi.</li>
+</ul>
+<h2>Key takeaways</h2>
+<ul>
+<li>Contrarian investing ka core = temporary problem vs permanent damage.</li>
+<li>Sabse important sawal — "why cheap?" — hamesha poocho.</li>
+<li>Sirf wahi sector pick karo jo aap achi tarah samajhte ho.</li>
+<li>Staggered buying aur patience se risk manage hota hai.</li>
+<li>Value investing hi nahi, discipline investing — process follow karo.</li>
+</ul>`
+  },
+  {
+    id: 'debttrap', icon: '🕳️', category: 'Debt', read: '6 min',
+    title: 'Debt Trap se Kaise Bachein? (Good Debt vs Bad Debt)',
+    excerpt: 'Har loan kharab nahi hota — aur har loan aapko azaad bhi nahi karta. Good debt vs bad debt ka difference samjhiye.',
+    body: `
+<p>Debt ek tool hai. Ye aapko aage badha sakta hai ya saal me kharab kar sakta hai. Difference sirf ek cheez se hota hai: <strong>kya wo debt aapke liye value create karta hai, aur kya aap use manage kar sakte hain?</strong></p>
+<h2>Good debt kya hai?</h2>
+<p>Good debt apni cost se zyada value paida karta hai — returns, income, ya financial stability.</p>
+<ul>
+<li><strong>Home loan:</strong> 8–9% interest, par property appreciation aur rent replaced kar raha hai. Tax benefit bhi milta hai (jahan applicable).</li>
+<li><strong>Education loan:</strong> Agar course ke baad income clearly zyada hoti hai, to ye future earnings me invest hai.</li>
+<li><strong>Business loan (working capital):</strong> Ye revenue generate karta hai — jab business economics clear ho.</li>
+</ul>
+<p>Customer loan ki condition: EMI 30–40% se zyada na ho, aur time pe repay karne ka plan ho.</p>
+<h2>Bad debt kya hai?</h2>
+<p>Bad debt sirf kharch ke liye hota hai — aksar us kharch ka jo depreciation kar deta hai.</p>
+<ul>
+<li><strong>Credit card revolving debt:</strong> 36–48% interest. Ye India ka sabse common debt trap hai.</li>
+<li><strong>Personal loan — luxury ke liye:</strong> iPhone, vacation, shaadi ke kapde. EMI aage chalti rahegi, khush usi ke sath gayi.</li>
+<li><strong>Buy-now-pay-later, consumer EMI:</strong> "No cost EMI" hidden processing fees aur pre-closure charges chhupa deta hai.</li>
+<li><strong>Top-up loan pe top-up loan:</strong> Ye compounding ulti diraj me chal raha hai — aap scattered ho rahe ho.</li>
+</ul>
+<h2>Debt trap kaise hota hai — real mechanics</h2>
+<p>Credit card pe agar aap ₹50,000 ka balance sirf minimum due pay kar rahe ho (5% = ₹2,500), to aapka balance 40%+ interest pe chalega. Aap sirf interest hi bharte rahenge; principal hamesha baaki reh jayega. Aksar log yahi baat miss karte hain.</p>
+<h2>Debt se nikalne ka plan</h2>
+<ul>
+<li><strong>Sabhi loans ek jagah likho:</strong> amount, interest rate, EMI, due date. Clarity se panic kam hota hai.</li>
+<li><strong>Highest interest pehle (Avalanche method):</strong> Credit card pehle clear karo. Maths me ye sabse efficient hai.</li>
+<li><strong>Smallest balance pehle (Snowball method):</strong> Agar motivation chahiye, chhota loan pehle khatam karo — phir momentum milega.</li>
+<li><strong>Balance transfer / refinance:</strong> Credit card ka 42% debt personal loan ke 15% pe transfer karo. Turant huge savings.</li>
+<li><strong>Naye EMIs band karo:</strong> 6–12 mahine tak sirf debt clear karo. Naya loan nahi.</li>
+<li><strong>Emergency fund banao:</strong> Chhota sa (₹25,000–50,000) fund ho, taki naya crisis aaye to phir kara nahi lena pade.</li>
+<li><strong>Income badhao:</strong> Freelance, side-skill, bonus. Debt clear karne me income side pe kaam karti hai.</li>
+</ul>
+<h2>Ek example</h2>
+<p>Aapka credit card debt ₹1,00,000 hai at 42% p.a. Aur aapke paas ₹8,000/month available hai.</p>
+<ul>
+<li>Sirf minimum due bharne me: 5+ saal, aur ₹1 lakh+ ka interest.</li>
+<li>₹8,000/month consistently bharne me: ~15 mahine, aur total interest ~₹28,000.</li>
+</ul>
+<p>Ek decision, do saal bachaata hai. Debt trap se nikalna maths ka kaam hai, magic nahi.</p>
+<h2>Key takeaways</h2>
+<ul>
+<li>Good debt assets banata hai; bad debt sirf kharch karta hai.</li>
+<li>Credit card revolving debt sabse khatarnak hoti hai — use pehle clear karein.</li>
+<li>Avalanche (highest interest first) math ke liye best hai; snowball motivation ke liye.</li>
+<li>Balance transfer / refinance se interest turant kam ho jata hai.</li>
+<li>Naya EMI band karo, emergency fund banao, aur income side pe badhao.</li>
+</ul>`
+  },
+  {
+    id: 'gold', icon: '🥇', category: 'Gold', read: '5 min',
+    title: 'Gold Investment Rules: Dhanteras aur Long-Term Wealth ke Liye',
+    excerpt: 'Gold sirf jewellery nahi, portfolio ka insurance bhi hai. Dhanteras pe sahi form, sahi allocation aur sahi rules jaaniye.',
+    body: `
+<p>India me gold emotion bhi hai aur asset bhi. Dhanteras pe kharidna auspicious maana jata hai. Par ek smart investor ke liye ye ek <strong>financial decision</strong> bhi hai — aur decisions ke rules hote hain.</p>
+<h2>Gold portfolio me kyun chahiye?</h2>
+<ul>
+<li><strong>Inflation hedge:</strong> Fiat currency long-term me value kho deti hai; gold relatively value rakhta hai.</li>
+<li><strong>Diversification:</strong> Gold aksar equity ke saath sath nahi chalta — jab market girta hai, gold support deta hai.</li>
+<li><strong>Crisis insurance:</strong> Currency ka risk, war, global uncertainty me gold defensive kaam karta hai.</li>
+<li><strong>Liquidity:</strong> Sona sabse liquid assets me se ek hai, globally.</li>
+</ul>
+<h2>Allocation kitna rakhein?</h2>
+<p>Standard recommendation: <strong>5–10% of your portfolio</strong>. Portfolio size badi ho to 5% bhi kaafi hai. Agar aap puri family ke liye physical gold rakh do to zyada nahi karna — gold returns long-run me equity se kam hai.</p>
+<p>Rebalancing ka rule: Gold jab 15–20% cross kare, thoda bechkar equity me daalein. Jab 3% se neeche aaye, phir kharid lein. Isse aap apne aap hi buy-low-sell-high karte hain.</p>
+<h2>Gold invest karne ke sahi forms</h2>
+<ul>
+<li><strong>Sovereign Gold Bond (SGB):</strong> 2.5% annual interest + gold price. 5 saal lock-in, tax-free maturity. Best form agar available ho.</li>
+<li><strong>Gold ETF:</strong> Ek click me diversified, 1 gram se bhi kam kharid sakte ho. Low cost.</li>
+<li><strong>Gold mutual fund / FoF:</strong> Same as ETF, SIP bhi chalta hai.</li>
+<li><strong>Digital gold:</strong> Chhote amount se start, par storage fees aur guarantee check karo.</li>
+<li><strong>Physical coins/bars (24k):</strong> Emotional value best, par making charges + GST + storage = return kam.</li>
+<li><strong>Jewellery:</strong> Ye asset nahi, lifestyle hai. 20–25% making charges + resale discount — "gold" ki value ka bada hissa loss.</li>
+</ul>
+<h2>Dhanteras pe kharidne ke rules</h2>
+<ul>
+<li>Pehle decide karo — <strong>asset ke liye</strong> ya <strong>puja/emotion ke liye</strong>. Dono alag budgets.</li>
+<li>Agar asset ke liye: SGB, ETF ya digital gold. Making charges zero.</li>
+<li>If jewellery ke liye: Budget pehle tay karo, aur "investment" ka label mat lagao uspe.</li>
+<li>BIS hallmark check karo. 916 ya 999 purity clear honi chahiye.</li>
+<li>Ek din ke emotion pe portfolio allocation nahi badalta — gold kharidna hamesha <em>plan</em> ka part hona chahiye.</li>
+</ul>
+<h2>Risks jo ignore na karein</h2>
+<ul>
+<li>Gold ka price 5–10 saal me flat reh sakta hai — sabr chahiye.</li>
+<li>Physical gold me chori, damage, aur unknown purity ka risk hai.</li>
+<li>Short-term trading ke liye gold instrument kam efficient hai (spread, fees).</li>
+<li>Dollar price pe gold global response depends karta hai; INR fall hone se Indian gold price upar aata hai.</li>
+</ul>
+<h2>Key takeaways</h2>
+<ul>
+<li>Gold portfolio ka 5–10% — insurance ke liye, not for chasing returns.</li>
+<li>SGB, ETF ya digital gold form best hai. Jewellery asset nahi hai.</li>
+<li>Rebalancing se hi asli value milti hai — 15% cross ho to thoda becho.</li>
+<li>Dhanteras pe kharido, par decision pehle se tay ho.</li>
+<li>Long-term hold karo — kam-se-kam 5 saal.</li>
+</ul>`
+  },
+  {
+    id: 'assetallocation', icon: '🥚', category: 'Investing', read: '6 min',
+    title: 'Asset Allocation: Apne Eggs Ek Basket me Kyun Na Rakhein?',
+    excerpt: 'Equity, debt, gold — kaise mix karein taki market crash me aap pani me na jayein. Allocation strategy jo actually kaam karti hai.',
+    body: `
+<p>"Apne eggs ek hi basket me mat rakho" — ye sabse purani investment rule hai, aur sabse important bhi. Asset allocation ka matlab hai apna paisa alag-alag asset classes me baant na, taki ek bura saal aapka poora portfolio na udaa de.</p>
+<h2>Main asset classes aur unka kaam</h2>
+<ul>
+<li><strong>Equity (stocks, equity mutual funds):</strong> Highest long-term growth, highest short-term volatility.</li>
+<li><strong>Debt (FD, bonds, debt funds, PPF):</strong> Stability, predictable returns, capital safety.</li>
+<li><strong>Gold:</strong> Crisis hedge aur inflation protection.</li>
+<li><strong>Real estate & REITs:</strong> Income + appreciation, but low liquidity in physical form.</li>
+<li><strong>Cash / liquid funds:</strong> Emergency ke liye — growth ke liye nahi.</li>
+</ul>
+<h2>Allocation age se kaise decide karein?</h2>
+<p>Classic thumb rule: <strong>100 − age = equity percentage</strong>. Age 30 → 70% equity. Age 50 → 50% equity. Age 60 → 40% or less.</p>
+<p>Modern version: agar aap long career horizon me hain aur income stable hai, to 100−age se 10% zyada equity rakh sakte hain. Par agar single earner ho ya income volatile ho, thoda conservative raho.</p>
+<h2>Ek sample portfolio: age 30, medium risk</h2>
+<ul>
+<li>Equity: 65% → ₹6,500 per ₹10,000 invested (across index fund + 1 flexicap)</li>
+<li>Debt: 20% → ₹2,000 (PPF, debt funds ya short-term FD)</li>
+<li>Gold: 10% → ₹1,000 (SGB ya ETF)</li>
+<li>Cash/Liquid: 5% → ₹500 (emergency fund part, ya bonus buffer)</li>
+</ul>
+<p>Isse ek bura equity saal (equity −30%) me poora portfolio sirf ~20% girega. Aap bechne ke panic me nahi aayenge — aur yahi sabse important hai.</p>
+<h2>Rebalancing — asli magic yahi hai</h2>
+<p>Rebalancing matlab apne portfolio ko target allocation pe wapas laana, saal me ek baar (ya jab 5% se zyada drift ho).</p>
+<p>Example: Beginning of year — 65% equity, 35% debt. Saal ke anti equity 20% badh jaaye, to aap 72/28 pe pahuch gaye. Aap 65/35 pe wapas laane ke liye thoda equity bechkar debt kharidte hain. Isse aap systemically high pe bechte ho aur low pe kharidte ho — bina koi market prediction kiye.</p>
+<h2>Behavioural risk vs market risk</h2>
+<p>Bahut log sochte hain ki crash se bachega. Par asli jokhim yahi hai ki aap crash me <em>bech doge</em>. Allocation ka kaam sirf maths nahi, <strong>psychology</strong> bhi hai. Sahi allocation se aap raat me so sakte ho — aur so paana hi successful investor ki pehchaan hai.</p>
+<h2>Common mistakes</h2>
+<ul>
+<li>Ek hi fund me sab daal dena — diversification ka bharam.</li>
+<li>Sirf "hot" sector me bhar do (2 saal pehle IT, pichhle saal defence).</li>
+<li>Goal ke hisab se allocation na karna — 2 saal me paisa chahiye, par equity me ho.</li>
+<li>Rebalancing na karna — allocation sab dheere-dheere drift ho jata hai.</li>
+<li>Sab money ek asset class me — FD-only ya equity-only, dono galat.</li>
+</ul>
+<h2>Key takeaways</h2>
+<ul>
+<li>Allocation age, goal aur risk appetite se decide karo — sabse pehle.</li>
+<li>Formula: 100 − age % equity (agar salary stable ho to thoda zyada).</li>
+<li>Saal me ek baar rebalance karein — high pe becho, low pe kharido.</li>
+<li>Allocation ka kaam volatility ko kam karna hai, returns ko maximize karna nahi.</li>
+<li>Jo portfolio raat me neend de, wahi aapke liye best hai.</li>
+</ul>`
+  },
+  {
+    id: 'freedom', icon: '🕊️', category: 'Mindset', read: '6 min',
+    title: 'Financial Freedom ka Asli Matlab Kya Hai?',
+    excerpt: 'Freedom ka matlab gadi-chhadi nahi, chunaab hai — kaam, jagah, aur time. Corpus kaise calculate karein jo aapko azaadi de.',
+    body: `
+<p>"Financial freedom" sunte hi ek image aati hai — bada ghar, luxury car, foreign trip. Par asli definition isse bahut simple hai: <strong>jab aapko kisi ek kaam, ek boss ya ek city me phanse rehne ki majboori na ho.</strong> Free ka matlab hai choice.</p>
+<h2>Freedom ka matlab kya hai — practice me</h2>
+<ul>
+<li><strong>Career freedom:</strong> Naukri chhodna ho, to chhod sako — bina ek EMIs jaisi worry ke.</li>
+<li><strong>Geographic freedom:</strong> Kaam ya retirement ke liye koi bhi shehar, koi bhi desh.</li>
+<li><strong>Time freedom:</strong> Apni din ki routine apne hisab se set karna.</li>
+<li><strong>Emotional freedom:</strong> Market crash ya layoffs ki news se raat me neend na khona.</li>
+</ul>
+<p>Luxury in sab ke baad aati hai — aksar aati hi nahi. Isi liye freedom ek number hai, na ki ek car.</p>
+<h2>Freedom Number calculate kaise karein?</h2>
+<p>Pehle apne <strong>aaj ke monthly essential expenses</strong> nikalein — sabzi, rent, EMI (jo retirement tak already repay ho jayengi, us sparse thoda different), insurance, utilities, basic travel. Say <strong>₹60,000 per month</strong>.</p>
+<p>Ab do compounding kaam karega — inflation badhayega, post-retirement return kam karega. Simple safe-withdrawal formula:</p>
+<p><strong>Corpus = (monthly expenses at retirement × 12) ÷ (post-retirement return − inflation)</strong></p>
+<p>Example, age 30 aur target freedom age 55 (25 saal): ₹60,000/month par 6% inflation se 25 saal me banta hai ~₹2.57 lakh/month → ~₹30.9 lakh/year. Post-retirement return 9%, inflation 6% → spread 3%. Corpus = 30.9 lakh ÷ 0.03 = <strong>~₹10.3 crore</strong>.</p>
+<p>Ye number bada lagega — magar asli baat ye hai ki aapko aaj se hi invest karna shuru karna hai. Same calculation ke hisab se SIP ~₹1.04 lakh/month at 12% lagega, jo time ke saath badh sakti hai. Target 25 saal badal ke 35 saal karne se ye SIP aadhi se kam ho jaati hai.</p>
+<h2>Freedom ke teen levels</h2>
+<ul>
+<li><strong>Level 1: Debt-free + emergency fund.</strong> Ye aapko aaj ka stress-free din deta hai. Sabse pehla target.</li>
+<li><strong>Level 2: Freedom number ka 50%.</strong> Ab aap ek part-time kaam se apna kharcha chala sakte ho — creativity aur choice open ho jati hai.</li>
+<li><strong>Level 3: Full freedom number.</strong> Passive stream aapka lifestyle cover karta hai. Ye 20–30 saal ka consistent compounding ka result hai, lottery ka nahi.</li>
+</ul>
+<h2>FIRE ka popular version (25× rule)</h2>
+<p>Aam taur pe FIRE community <strong>25× annual expenses</strong> corpus target rakhti hai (4% withdrawal rate maankar). Ye thoda aggressive hai — India me 3% se 3.5% safe maana jata hai, especially 30+ saal ki retirement ke liye.</p>
+<p>Better: 6-6% inflation scenario me real return 3% maankar ~33× annual expenses. Conservative raho, planning me safety margin rakho.</p>
+<h2>FREEDOM ke practical steps</h2>
+<ul>
+<li>Apne "freedom number" ko ek paper se likho, aur wall pe chipka do.</li>
+<li>Savings rate pehle badhao — income badhane se pehle spending na badhao.</li>
+<li>Compound ko time do — 10 saal ki badi difference hai 20 saal se.</li>
+<li>Debt-free pehle, then aggressive investing.</li>
+<li>Lifestyle inflation se sabse zyada cautious raho.</li>
+</ul>
+<h2>Key takeaways</h2>
+<ul>
+<li>Financial freedom = choice, luxury nahi.</li>
+<li>Freedom Number = annual expenses at retirement ÷ (post-ret return − inflation).</li>
+<li>Pehle debt-free + emergency fund, phir corpus build karo.</li>
+<li>25× rule aggressive hai — 30–33× zyada safe hai.</li>
+<li>Sabse bada free-up hone wala factor: aaj shuru karna aur consistency.</li>
+</ul>`
+  },
+  {
+    id: 'inflation', icon: '📉', category: 'Mindset', read: '6 min',
+    title: 'Inflation: Aapke Paise ki Sabse Badi Dushman',
+    excerpt: 'Jo paisa bank me pada hai, wo har saal chupke se kam hota jata hai. Inflation ka asli kharcha aur uska solution.',
+    body: `
+<p>Har saal aapki grocery bill badh rahi hai. Wahi dal, wahi tel, par price zyada. Iska matlab paisa mehnga nahi hua — <strong>aapke paise ki power kam ho gayi</strong>. Isko inflation kehte hain. Aur ye har investor ki sabse chup-chaap dushman hai.</p>
+<h2>Inflation aapka kharcha kaise karta hai</h2>
+<p>6% inflation ka matlab hai aapko har 12 saal me double kharche. Aaj ₹10 me jo chai milti hai, 12 saal baad usi chai ka ₹20 hoga. Aaj ke ₹1 lakh ka value 12 saal baad sirf ₹50,000 jaisa rahega.</p>
+<p>Matlab: Agar aapka paisa 5% return de raha hai aur inflation 6% hai, to aap <strong>1% per year loss</strong> kar rahe ho — "safe" lagne wale FD me bhi.</p>
+<h2>Real return ka formula</h2>
+<p><strong>Real return ≈ Nominal return − Inflation.</strong></p>
+<ul>
+<li>FD @ 6.5%, inflation @ 6% → real return 0.5%. Aur tax ke baad 30% slab pe, actually negative.</li>
+<li>Equity @ 12%, inflation @ 6% → real return ~6%. Yahi wealth banata hai.</li>
+</ul>
+<p>Yehi karan hai ki sab equity market me invest karte hain — inflation ko beat karne ke liye.</p>
+<h2>Inflation ke tarah-tarah ke roop</h2>
+<ul>
+<li><strong>Consumer inflation (CPI):</strong> Rozmarra ke saaman — dal, sabzi, kirana.</li>
+<li><strong>Education inflation:</strong> 10–12% per year, CPI se zyada. Bacche ki fees ke liye alag planning.</li>
+<li><strong>Medical inflation:</strong> 12–15% per year. Insurance take zaroori.</li>
+<li><strong>Household inflation:</strong> Rent aur bill badhna — aksar CPI se zyada.</li>
+</ul>
+<p>Iska matlab aapko <strong>future kharche</strong> calculate karte waqt sirf general inflation nahi, category-specific inflation use karna chahiye.</p>
+<h2>Example: ek goal ka calculation</h2>
+<p>Aap ka bete ki college fees 15 saal baad chahiye. Aaj ₹8 lakh lagti hai. Education inflation 10%:</p>
+<ul>
+<li>Future cost = 8,00,000 × (1.10)^15 ≈ <strong>₹33.4 lakh</strong>.</li>
+<li>Equity me 12% se invest karke: 8,00,000 × (1.12)^15 ≈ ₹43.8 lakh.</li>
+<li>Aapka real excess = ₹43.8 − ₹33.4 = ₹10.4 lakh.</li>
+</ul>
+<p>Agar wahi 8 lakh FD me 6.5% pe rakh diya hota, to 15 saal baad ~₹20.7 lakh — aap <strong>₹12.7 lakh short</strong> hote. Yehi inflation ka asli kharcha hai.</p>
+<h2>Inflation se kaise bachein</h2>
+<ul>
+<li><strong>Cash me zyada na rakhein:</strong> Sirf emergency fund aur short-term goals ke liye.</li>
+<li><strong>Equity me invest karein:</strong> Long-term me equity inflation ko beat karta hai.</li>
+<li><strong>Gold ko 5–10%:</strong> Currency aur inflation risk ke against hedge.</li>
+<li><strong>Pathway target:</strong> Apne retirement ka number inflation-adjusted rakho — flat numbers kaafi nahi hain.</li>
+<li><strong>Insurance lein:</strong> Medical inflation ko sirf insurance handle kar sakta hai.</li>
+<li><strong>Salary growth check karein:</strong> Agar aapki income inflation se slow badh rahi hai, to expense structure badalna padega.</li>
+</ul>
+<h2>Ek simple test</h2>
+<p>Apne bank statement dekho aur sawal poocho: "Kya ye paisa 6% se zyada kam kar raha hai?" Agar jawab nahi hai, to wo paisa sach me loss kar raha hai — aapko dikh raha hai ya nahi, ye alag baat hai.</p>
+<h2>Key takeaways</h2>
+<ul>
+<li>Inflation har saal chupke se paise ki buying power kam karta hai.</li>
+<li>Real return = nominal return − inflation. FD almost always 0 ya negative real return deta hai.</li>
+<li>Education aur medical inflation CPI se kaafi zyada hai — alag se plan karo.</li>
+<li>Long-term equity + gold ka mix inflation ko best handle karta hai.</li>
+<li>Goals ko hamesha inflation-adjusted future value me calculate karo.</li>
+</ul>`
+  }
+];
+
+/* ---------- Insights grid ---------- */
+function renderInsights() {
+  const grid = $('#insightsGrid');
+  if (!grid) return;
+  grid.innerHTML = ARTICLES.map((a, i) => `
+    <article class="reveal group cursor-pointer rounded-2xl bg-white border border-gold-100 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col"
+      role="button" tabindex="0" aria-label="Read article: ${a.title}" data-article="${a.id}">
+      <div class="h-1.5 w-full bg-gradient-to-r from-gold-300 via-gold-500 to-gold-700"></div>
+      <div class="p-5 sm:p-6 flex flex-col flex-1">
+        <div class="flex items-center justify-between gap-3 mb-4">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-navy-800 text-gold-300 text-[11px] font-bold uppercase tracking-wider">${a.category}</span>
+          <span class="text-[11px] font-semibold text-navy-800/50 whitespace-nowrap">${a.read} read</span>
+        </div>
+        <div class="text-3xl mb-3" aria-hidden="true">${a.icon}</div>
+        <h3 class="font-display font-extrabold text-navy-800 text-lg leading-snug tracking-tight group-hover:text-gold-800 transition">${a.title}</h3>
+        <p class="mt-2.5 text-sm text-navy-800/65 leading-relaxed flex-1">${a.excerpt}</p>
+        <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-gold-800 group-hover:gap-3 transition-all duration-200">
+          Read <span aria-hidden="true">→</span>
+        </span>
+      </div>
+    </article>`).join('');
+
+  $('[data-article]', grid).forEach(card => {
+    card.addEventListener('click', () => openArticle(card.dataset.article));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openArticle(card.dataset.article); }
+    });
+  });
+  observeReveals(grid);
+}
+
+/* ---------- Article reader ---------- */
+let currentArticleId = null, lastFocused = null;
+
+function openArticle(id) {
+  const a = ARTICLES.find(x => x.id === id);
+  if (!a) return;
+  currentArticleId = id;
+  lastFocused = document.activeElement;
+
+  $('#articleBody').innerHTML = `
+    <div class="relative overflow-hidden bg-navy-800 text-white">
+      <div class="absolute inset-0 hero-grid opacity-60 pointer-events-none" aria-hidden="true"></div>
+      <div class="relative max-w-3xl mx-auto px-5 sm:px-6 py-8 sm:py-12">
+        <button id="articleBackTop" class="inline-flex items-center gap-2 text-sm font-semibold text-gold-300 hover:text-gold-100 transition mb-7" aria-label="Back to insights">
+          <span aria-hidden="true">←</span> Back to Insights
+        </button>
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+          <span class="px-3 py-1 rounded-full bg-gold-500/15 border border-gold-500/40 text-gold-300 text-[11px] font-bold uppercase tracking-wider">${a.category}</span>
+          <span class="text-xs font-semibold text-white/60">${a.read} read</span>
+        </div>
+        <div class="text-4xl mb-4" aria-hidden="true">${a.icon}</div>
+        <h1 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.12] tracking-tight">${a.title}</h1>
+        <p class="mt-4 text-white/65 text-base sm:text-lg leading-relaxed">${a.excerpt}</p>
+      </div>
+    </div>
+
+    <div class="max-w-3xl mx-auto px-5 sm:px-6 py-10 sm:py-14">
+      <div class="rounded-2xl bg-gradient-to-br from-gold-100 to-gold-50 border border-gold-300/60 p-5 sm:p-6 mb-9">
+        <p class="font-display font-bold text-navy-800 mb-2 flex items-center gap-2">🔑 Key Takeaways</p>
+        <ul class="prose-ms !mb-0" id="takeaways"></ul>
+      </div>
+      <div class="prose-ms max-w-none">${a.body}</div>
+
+      <div class="mt-12 pt-8 border-t border-navy-800/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <button id="articleBackBottom" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-navy-800 hover:bg-navy-700 text-gold-300 font-display font-bold text-sm transition" aria-label="Back to insights">
+          <span aria-hidden="true">←</span> Back to Insights
+        </button>
+        <div class="flex items-center gap-2">
+          <button class="share-btn w-10 h-10 grid place-items-center rounded-xl border border-navy-800/15 text-navy-800 hover:bg-navy-800 hover:text-gold-300 transition" data-share="x" aria-label="Share on X">𝕏</button>
+          <button class="share-btn w-10 h-10 grid place-items-center rounded-xl border border-navy-800/15 text-navy-800 hover:bg-navy-800 hover:text-gold-300 transition" data-share="linkedin" aria-label="Share on LinkedIn">in</button>
+          <button class="share-btn w-10 h-10 grid place-items-center rounded-xl border border-navy-800/15 text-navy-800 hover:bg-navy-800 hover:text-gold-300 transition" data-share="whatsapp" aria-label="Share on WhatsApp">✆</button>
+          <button id="copyLink" class="px-4 h-10 rounded-xl border border-navy-800/15 text-navy-800 font-semibold text-xs hover:bg-navy-800 hover:text-gold-300 transition" aria-label="Copy link">Copy link</button>
+        </div>
+      </div>
+    </div>`;
+
+  /* Build Key Takeaways from last "Key takeaways" list in the body */
+  const tmp = document.createElement('div');
+  tmp.innerHTML = a.body;
+  const lists = Array.from(tmp.querySelectorAll('h2')).filter(h => /key takeaway/i.test(h.textContent));
+  let items = [];
+  if (lists.length) {
+    const ul = lists[lists.length - 1].nextElementSibling;
+    if (ul && ul.tagName === 'UL') items = Array.from(ul.querySelectorAll('li')).map(li => li.innerHTML);
+  }
+  $('#takeaways').innerHTML = items.length
+    ? items.map(t => `<li>${t}</li>`).join('')
+    : '<li>Read below for the full breakdown.</li>';
+
+  /* Remove the inline "Key takeaways" heading+list so it isn't duplicated */
+  const prose = $('#articleBody .prose-ms');
+  const h2s = Array.from(prose.querySelectorAll('h2')).filter(h => /key takeaway/i.test(h.textContent));
+  if (h2s.length) {
+    const h = h2s[h2s.length - 1];
+    const ul = h.nextElementSibling;
+    if (ul && ul.tagName === 'UL') ul.remove();
+    h.remove();
+  }
+
+  $('#articleBackTop, #articleBackBottom').forEach(b => b.addEventListener('click', closeArticle));
+  $('.share-btn').forEach(b => b.addEventListener('click', () => doShare(b.dataset.share, a)));
+  $('#copyLink').addEventListener('click', async (e) => {
+    const url = location.href.split('#')[0] + '#' + a.id;
+    try {
+      await navigator.clipboard.writeText(url);
+      e.target.textContent = 'Copied!';
+      setTimeout(() => (e.target.textContent = 'Copy link'), 1600);
+    } catch { e.target.textContent = url; }
+  });
+
+  const overlay = $('#articleOverlay');
+  overlay.classList.remove('hidden');
+  overlay.scrollTop = 0;
+  document.body.classList.add('article-open');
+  overlay.focus && overlay.setAttribute('tabindex', '-1');
+  overlay.focus();
+}
+
+function closeArticle() {
+  const overlay = $('#articleOverlay');
+  overlay.classList.add('hidden');
+  document.body.classList.remove('article-open');
+  currentArticleId = null;
+  if (lastFocused && lastFocused.focus) lastFocused.focus();
+  const section = $('#insights');
+  section && section.scrollIntoView({ block: 'start' });
+}
+
+function doShare(kind, a) {
+  const url = location.href.split('#')[0] + '#' + a.id;
+  const text = encodeURIComponent(a.title + ' — Money Sastra');
+  const map = {
+    x: `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(url)}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+    whatsapp: `https://wa.me/?text=${text}%20${encodeURIComponent(url)}`
+  };
+  window.open(map[kind], '_blank', 'noopener,noreferrer');
+}
+
+/* ESC closes reader; progress bar follows overlay scroll */
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !$('#articleOverlay').classList.contains('hidden')) closeArticle();
+});
+$('#articleOverlay').addEventListener('scroll', (e) => {
+  const el = e.currentTarget;
+  const max = el.scrollHeight - el.clientHeight;
+  const pct = max > 0 ? (el.scrollTop / max) * 100 : 0;
+  $('#readingProgress').style.width = pct + '%';
+});
+
+/* Deep-link support: #article-id */
+window.addEventListener('load', () => {
+  const hash = location.hash.replace('#', '');
+  if (ARTICLES.some(a => a.id === hash)) openArticle(hash);
+});
+
+/* =========================================================
+   ABOUT + FOOTER
+   ========================================================= */
+function renderAbout() {
+  const host = $('#aboutContent');
+  if (!host) return;
+  host.innerHTML = `
+    <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+      <div>
+        <span class="text-gold-400 font-semibold text-sm tracking-[0.18em] uppercase">About</span>
+        <h2 class="mt-3 font-display font-extrabold text-3xl sm:text-4xl tracking-tight">
+          Personal finance, <span class="gold-text-gradient">aasan bhasha me</span>
+        </h2>
+        <p class="mt-5 text-white/75 leading-relaxed">
+          Money Sastra ka ek hi mission hai: personal finance ko simple, practical aur accessible banana —
+          English aur Hinglish dono me, Indian audiences ke liye. Yahan spreadsheets ki jargon nahi milti;
+          seedhi baat milti hai — budget kaise banaye, kitna invest karein, aur compounding se kaise
+          long-term wealth build ho.
+        </p>
+        <p class="mt-4 text-white/70 leading-relaxed">
+          Chunki sach ye hai: wealth aapki income se zyada aapke <strong class="text-gold-300">habits</strong>,
+          aapki <strong class="text-gold-300">savings rate</strong> aur aapke
+          <strong class="text-gold-300">patience</strong> se banti hai. Hum har chapter ko simple examples,
+          real numbers aur zero pressure ke saath explain karte hain.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          ${[
+            { label: 'YouTube', icon: '▶', href: '#', cls: 'btn-gold' },
+            { label: 'Instagram', icon: '◎', href: '#', cls: 'border border-white/20 text-white hover:bg-white/10' },
+            { label: 'Newsletter', icon: '✉', href: '#', cls: 'border border-gold-500/45 text-gold-300 hover:bg-gold-500/10' }
+          ].map(s => `
+            <a href="${s.href}" target="_blank" rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-display font-bold text-sm transition-all duration-200 ${s.cls}"
+              aria-label="Money Sastra on ${s.label}">
+              <span aria-hidden="true" class="text-base">${s.icon}</span>${s.label}
+            </a>`).join('')}
+        </div>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-4 sm:gap-5">
+        ${[
+          { icon: '🧮', t: 'Free, forever tools', d: '5 calculators jo live update hote hain — SIP, budget, lumpsum, freedom number aur EMI.' },
+          { icon: '📚', t: 'Evergreen guides', d: '10 in-depth reads jo market cycles ke baad bhi relevant rehte hain.' },
+          { icon: '🕊️', t: 'Zero pressure', d: 'Koi signup nahi, koi email wall nahi, koi affiliate push nahi.' },
+          { icon: '🇮🇳', t: 'Built for India', d: 'Indian rupee formatting, lakh/crore maths aur local real-life examples.' }
+        ].map(c => `
+          <div class="reveal rounded-2xl bg-navy-700/45 border border-white/10 p-5 hover:-translate-y-1 hover:border-gold-500/35 transition-all duration-300">
+            <div class="text-2xl mb-3" aria-hidden="true">${c.icon}</div>
+            <h3 class="font-display font-bold text-base">${c.t}</h3>
+            <p class="mt-1.5 text-sm text-white/60 leading-relaxed">${c.d}</p>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  observeReveals(host);
+}
+
+function renderFooter() {
+  const host = $('#footer');
+  if (!host) return;
+  host.innerHTML = `
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14">
+      <div class="grid gap-10 md:grid-cols-4">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-2.5">
+            <span class="grid place-items-center w-10 h-10 rounded-xl btn-gold font-display font-extrabold text-[15px]">MS</span>
+            <span class="font-display font-extrabold text-lg tracking-tight">Money <span class="gold-text-gradient">Sastra</span></span>
+          </div>
+          <p class="mt-4 text-sm text-white/60 leading-relaxed max-w-sm">
+            Master Your Money, Build Real Wealth. Free calculators aur evergreen money guides —
+            simple English aur Hinglish me.
+          </p>
+          <div class="mt-5 flex flex-wrap gap-2.5">
+            <a href="#" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-lg text-xs font-bold border border-white/15 text-white/85 hover:border-gold-500/50 hover:text-gold-300 transition">YouTube</a>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-lg text-xs font-bold border border-white/15 text-white/85 hover:border-gold-500/50 hover:text-gold-300 transition">Instagram</a>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-lg text-xs font-bold border border-white/15 text-white/85 hover:border-gold-500/50 hover:text-gold-300 transition">Newsletter</a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-display font-bold text-sm text-gold-300 uppercase tracking-wider mb-4">Explore</h3>
+          <ul class="space-y-2.5 text-sm">
+            <li><a href="#home" class="text-white/65 hover:text-gold-300 transition">Home</a></li>
+            <li><a href="#calculators" class="text-white/65 hover:text-gold-300 transition">Calculators</a></li>
+            <li><a href="#insights" class="text-white/65 hover:text-gold-300 transition">Insights</a></li>
+            <li><a href="#about" class="text-white/65 hover:text-gold-300 transition">About</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-display font-bold text-sm text-gold-300 uppercase tracking-wider mb-4">Popular Tools</h3>
+          <ul class="space-y-2.5 text-sm">
+            <li><button data-goto="sip" class="footer-goto text-white/65 hover:text-gold-300 transition text-left">SIP Wealth Calculator</button></li>
+            <li><button data-goto="budget" class="footer-goto text-white/65 hover:text-gold-300 transition text-left">50-30-20 Budget Tool</button></li>
+            <li><button data-goto="freedom" class="footer-goto text-white/65 hover:text-gold-300 transition text-left">Freedom Number</button></li>
+            <li><button data-goto="emi" class="footer-goto text-white/65 hover:text-gold-300 transition text-left">EMI Calculator</button></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-10 pt-8 border-t border-white/10">
+        <div class="rounded-2xl bg-navy-900/70 border border-gold-500/15 p-4 sm:p-5">
+          <p class="text-xs sm:text-[13px] text-white/55 leading-relaxed">
+            <strong class="text-gold-300">Disclaimer:</strong> This content is for educational purposes only and is not financial advice.
+            Please do your own research or consult a registered advisor before investing. All calculator results are estimates;
+            actual returns and outcomes vary with market conditions, taxes and fees.
+          </p>
+        </div>
+        <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/45">
+          <p>© <span id="year"></span> Money Sastra. All rights reserved.</p>
+          <p>Made with ☕ &amp; compounding for Indian investors.</p>
+        </div>
+      </div>
+    </div>`;
+
+  $('#year').textContent = new Date().getFullYear();
+  $('.footer-goto').forEach(btn => btn.addEventListener('click', () => {
+    showCalc(btn.dataset.goto);
+    $('#calculators').scrollIntoView({ block: 'start' });
+  }));
+}
+
+renderAbout();
+renderFooter();
+
+/* Keep the insights grid rendering call at the very end of the script,
+   after all renderers are defined. */
+renderInsights();
+</script>
+</body>
+</html>
