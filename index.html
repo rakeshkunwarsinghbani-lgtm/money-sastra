@@ -3,7 +3,6 @@
 <head>
 <script>
 window.contextInfo = {"files":[],"materials":[],"crafts":[]};
-// 处理锚点链接跳转（srcDoc iframe 中锚点链接默认行为不正确）
 document.addEventListener('click', function(e) {
   var anchor = e.target.closest('a');
   if (anchor) {
@@ -351,12 +350,8 @@ document.addEventListener('click', function(e) {
 <script>
 /* =========================================================
    Money Sastra — app script
-   Stage 1: utilities, nav, scroll reveal, formatting.
-   Calculators, insights, article reader, about & footer
-   are added in the following stages.
    ========================================================= */
 
-/* ---------- Utilities ---------- */
 const $  = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
@@ -366,7 +361,6 @@ const inr = (num, decimals = 0) => {
   return '₹' + n.toLocaleString('en-IN', { maximumFractionDigits: decimals, minimumFractionDigits: decimals });
 };
 
-/* Compact Indian label: 12.5 L / 1.25 Cr */
 const inrCompact = (num) => {
   const n = Number.isFinite(num) ? Math.abs(num) : 0;
   const sign = num < 0 ? '-' : '';
@@ -376,7 +370,7 @@ const inrCompact = (num) => {
   return sign + '₹' + n.toFixed(0);
 };
 
-/* ---------- Navbar: scroll style + mobile menu ---------- */
+/* ---------- Navbar ---------- */
 const navbar = $('#navbar');
 const onScrollNav = () => {
   if (window.scrollY > 12) {
@@ -427,12 +421,6 @@ if (window.Chart) {
 }
 const CHART_GOLD = '#F0B429', CHART_GOLD_LIGHT = '#FFD54A', CHART_NAVY = '#12294F', CHART_NAVY_LIGHT = '#1A3A6B';
 
-/* =========================================================
-   CALCULATOR FRAMEWORK
-   Tabs + panels are registered as objects; each calculator
-   provides a build() returning markup and a mount() that
-   wires inputs -> live recalculation -> chart rendering.
-   ========================================================= */
 const CALCS = [
   { id: 'sip',      label: 'SIP',        short: 'SIP Wealth',       icon: '📈',
     title: 'SIP Wealth Calculator', blurb: 'See how a small monthly SIP compounds into a large corpus.' },
@@ -446,11 +434,10 @@ const CALCS = [
     title: 'Debt Payoff / EMI Calculator', blurb: "Know your EMI — and how much interest you're really paying." }
 ];
 const chartRegistry = {};
-const panelBuilders = {};   // host = results panel container; writes tiles + chart into host
+const panelBuilders = {};  
 let activeCalc = 'sip';
 let activePanelOrigin = 0;
 
-/* Shared markup helpers -------------------------------------- */
 const tabBtn = (c) => `
   <button role="tab" id="tab-${c.id}" data-calc="${c.id}" aria-selected="false" aria-controls="calcResultPanel" tabindex="-1"
     title="${c.short}"
@@ -458,7 +445,6 @@ const tabBtn = (c) => `
     <span class="mr-1.5" aria-hidden="true">${c.icon}</span>${c.label}
   </button>`;
 
-/* A labelled input row = slider + number input, kept in sync */
 const field = ({ id, label, hint = '', min, max, step, value, prefix = '', suffix = '', fmt = (v) => v }) => `
   <div class="mb-6">
     <div class="flex items-baseline justify-between gap-3 flex-wrap mb-2.5">
@@ -476,7 +462,6 @@ const field = ({ id, label, hint = '', min, max, step, value, prefix = '', suffi
     ${hint ? `<p class="mt-2 text-xs text-white/45">${hint}</p>` : ''}
   </div>`;
 
-/* Result tile */
 const tile = (label, value, tone = 'gold', sub = '') => `
   <div class="rounded-xl bg-navy-950/45 border border-white/10 p-3.5">
     <p class="text-[11px] uppercase tracking-wider text-white/50 font-semibold">${label}</p>
@@ -484,11 +469,9 @@ const tile = (label, value, tone = 'gold', sub = '') => `
     ${sub ? `<p class="mt-0.5 text-[11px] text-white/45">${sub}</p>` : ''}
   </div>`;
 
-/* Per-calculator remembered input values (keyed by field id) */
 const calcState = {};
 
-/* Wire a slider + number input pair; calls onInput(rawValue).
-   Values are remembered across tab switches via calcState. */
+/* BUG FIX: Added null check for onChange callback */
 function bindPair(id, onChange) {
   const num = $(`#${id}-num`), rng = $(`#${id}-rng`);
   if (!num || !rng) return null;
@@ -496,7 +479,6 @@ function bindPair(id, onChange) {
     const lo = Number(rng.min), hi = Number(rng.max);
     return Math.min(hi, Math.max(lo, Number.isFinite(v) ? v : lo));
   };
-  /* Restore a previously used value for this calculator */
   const remembered = calcState[id];
   if (remembered != null) {
     const r = clamp(remembered);
@@ -507,12 +489,15 @@ function bindPair(id, onChange) {
     rng.style.setProperty('--fill', pct + '%');
   };
   const remember = () => { calcState[id] = Number(rng.value); };
-  const emit = () => { paint(); remember(); onChange(Number(rng.value)); };
+  
+  /* Bug fixed here: Check if onChange exists before calling it */
+  const emit = () => { paint(); remember(); if (onChange) onChange(Number(rng.value)); };
+  
   rng.addEventListener('input', () => { num.value = rng.value; emit(); });
   num.addEventListener('input', () => {
     if (num.value === '' || num.value === '-') return;
     const v = clamp(Number(num.value));
-    rng.value = v; paint(); remember(); onChange(v);
+    rng.value = v; paint(); remember(); onChange && onChange(v);
   });
   num.addEventListener('blur', () => { const v = clamp(Number(num.value)); num.value = v; rng.value = v; emit(); });
   paint();
@@ -520,10 +505,8 @@ function bindPair(id, onChange) {
 }
 
 /* ---------- Animated (count-up) numbers ---------- */
-const animNums = new WeakMap();   // element -> { raf, from, to, fmt }
+const animNums = new WeakMap();
 
-/* Animate an element's text from its current value to `to` over ~350ms.
-   `fmt(n)` formats the intermediate value (defaults to the Indian ₹ format). */
 function animCount(el, to, fmt = (n) => inr(n), dur = 350) {
   if (!el) return;
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -540,7 +523,7 @@ function animCount(el, to, fmt = (n) => inr(n), dur = 350) {
   const start = performance.now();
   const step = (now) => {
     const t = Math.min(1, (now - start) / dur);
-    const eased = 1 - Math.pow(1 - t, 3);   /* easeOutCubic */
+    const eased = 1 - Math.pow(1 - t, 3);
     animNums.set(el, { raf: null, pending: from + (to - from) * eased });
     el.textContent = fmt(from + (to - from) * eased);
     if (t < 1) animNums.set(el, { raf: requestAnimationFrame(step), pending: to });
@@ -549,7 +532,6 @@ function animCount(el, to, fmt = (n) => inr(n), dur = 350) {
   animNums.set(el, { raf: requestAnimationFrame(step), pending: to });
 }
 
-/* Register / render tabs + panels ----------------------------- */
 function initCalcTabs() {
   $('#calcTabs').innerHTML = CALCS.map(tabBtn).join('');
   $('.calc-tab').forEach(btn => {
@@ -563,7 +545,6 @@ function initCalcTabs() {
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => moveIndicator(activeCalc));
 }
 
-/* Arrow / Home / End keyboard navigation between tabs */
 function onTabKeydown(e) {
   const keys = ['ArrowRight', 'ArrowLeft', 'Home', 'End'];
   if (!keys.includes(e.key)) return;
@@ -579,7 +560,6 @@ function onTabKeydown(e) {
   next && next.focus();
 }
 
-/* Slide the gold underline indicator under the active tab */
 function moveIndicator(id) {
   const btn = $(`#tab-${id}`), ind = $('#tabIndicator'), bar = $('#calcTabs');
   if (!btn || !ind || !bar) return;
@@ -590,12 +570,10 @@ function moveIndicator(id) {
   ind.style.opacity = '1';
 }
 
-/* Called by each calculator to (re)build its input controls in the shared input panel */
 function buildInputs(html) {
   $('#calcInputPanel').innerHTML = html;
 }
 
-/* Called by each calculator to (re)build its result tiles + chart in the shared results panel */
 function buildResults(html) {
   $('#calcResultPanel').innerHTML = html;
   $('#calcResultPanel .tile-anim').forEach((el, i) => { el.style.animationDelay = (i * 45) + 'ms'; });
@@ -611,14 +589,13 @@ function showCalc(id, force = false) {
     btn.setAttribute('tabindex', btn.dataset.calc === id ? '0' : '-1');
   });
   moveIndicator(id);
-  /* Keep the active tab visible in the horizontally-scrollable bar */
+  
   const activeBtn = $(`#tab-${id}`);
   if (activeBtn && activeBtn.scrollIntoView) {
-    try { activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); } catch (e) { /* noop */ }
+    try { activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); } catch (e) { }
     setTimeout(() => moveIndicator(id), 320);
   }
-  /* Fade the panel body out quickly, then rebuild and let the CSS
-     keyframe animate the new content in (cross-fade + fade-up). */
+  
   const inputPanel = $('#calcInputPanel'), resultPanel = $('#calcResultPanel');
   const panels = [inputPanel, resultPanel];
 
@@ -630,7 +607,7 @@ function showCalc(id, force = false) {
       p.style.transform = '';
       p.style.transitionDelay = '';
       p.classList.remove('panel-swap');
-      void p.offsetWidth;                      /* force reflow to restart animation */
+      void p.offsetWidth;
       p.style.animationDelay = (i * 55) + 'ms';
       p.classList.add('panel-swap');
     });
@@ -652,20 +629,19 @@ function showCalc(id, force = false) {
   }
 }
 
-/* Thin alias so calculators can call the persistent-chart builder */
 function buildChartCard(canvasId, title, height = 'h-64') {
   return chartCardDef(canvasId, title, height);
 }
 
-/* Shared chart card wrapper — canvas is re-created per active tab */
 const chartCardDef = (canvasId, title, height = 'h-64') => `
   <div class="rounded-2xl bg-navy-700/45 border border-white/10 p-4 sm:p-5">
     <p class="text-sm font-semibold text-white/75 mb-3">${title}</p>
     <div class="${height} relative"><canvas id="${canvasId}" aria-label="${title}" role="img"></canvas></div>
   </div>`;
 
+
 /* =========================================================
-   (a) SIP WEALTH CALCULATOR  — monthly compounding
+   (a) SIP WEALTH CALCULATOR 
    ========================================================= */
 panelBuilders.sip = () => {
   const meta = CALCS.find(c => c.id === 'sip');
@@ -688,13 +664,15 @@ panelBuilders.sip = () => {
     </div>
   `);
 
-  const amt = bindPair('sipAmt'), ret = bindPair('sipRet'), yrs = bindPair('sipYrs');
+  /* BUG FIX: Added () => recalc() to properly connect the sliders to calculations */
+  const amt = bindPair('sipAmt', () => recalc());
+  const ret = bindPair('sipRet', () => recalc());
+  const yrs = bindPair('sipYrs', () => recalc());
   if (!amt || !ret || !yrs) return;
 
   const recalc = () => {
     const P = amt.value, annual = ret.value / 100, n = yrs.value;
     const r = annual / 12, months = n * 12;
-    /* Future value of an annuity-due (SIP at start of month) */
     const fv = r === 0 ? P * months : P * ((Math.pow(1 + r, months) - 1) / r) * (1 + r);
     const invested = P * months;
     const gain = Math.max(0, fv - invested);
@@ -704,7 +682,6 @@ panelBuilders.sip = () => {
     animCount($('#sipTotal'), fv);
     $('#sipNote').innerHTML = `At <strong class="text-gold-300">${inr(P)}/month</strong> for <strong class="text-gold-300">${n} years</strong> at <strong class="text-gold-300">${ret.value}% p.a.</strong>, your money multiplies roughly <strong class="text-gold-300">${(fv / invested).toFixed(1)}×</strong>. Your contributions are just ${inrCompact(invested)} of the ${inrCompact(fv)} — the rest is compounding.`;
 
-    /* Growth curve data (yearly marks) */
     const labels = ['Yr 1'], investedSeries = [P * 12], valueSeries = [fvAt(P, r, 12)];
     function fvAt(P, r, m) { return r === 0 ? P * m : P * ((Math.pow(1 + r, m) - 1) / r) * (1 + r); }
     for (let y = 2; y <= n; y++) { labels.push('Yr ' + y); investedSeries.push(P * 12 * y); valueSeries.push(fvAt(P, r, y * 12)); }
@@ -714,7 +691,7 @@ panelBuilders.sip = () => {
       { label: 'Portfolio value', data: valueSeries, color: CHART_GOLD }
     ]);
   };
-  [amt, ret, yrs].forEach(b => b && b.set(Number(b.value))); // initial paint fires recalc
+  [amt, ret, yrs].forEach(b => b && b.set(Number(b.value)));
 };
 
 /* =========================================================
@@ -741,7 +718,10 @@ panelBuilders.lumpsum = () => {
     </div>
   `);
 
-  const amt = bindPair('lsAmt'), ret = bindPair('lsRet'), yrs = bindPair('lsYrs');
+  /* BUG FIX: Added () => recalc() */
+  const amt = bindPair('lsAmt', () => recalc());
+  const ret = bindPair('lsRet', () => recalc());
+  const yrs = bindPair('lsYrs', () => recalc());
   if (!amt || !ret || !yrs) return;
 
   const recalc = () => {
@@ -801,7 +781,8 @@ panelBuilders.budget = () => {
     </div>
   `);
 
-  const inc = bindPair('budIncome');
+  /* BUG FIX: Added () => recalc() */
+  const inc = bindPair('budIncome', () => recalc());
   if (!inc) return;
   const recalc = () => {
     const I = inc.value;
@@ -829,12 +810,8 @@ panelBuilders.budget = () => {
   inc && inc.set(Number(inc.value));
 };
 
-/* Shared SIP future value helper */
 function fvOfSip(P, r, months) { return r === 0 ? P * months : P * ((Math.pow(1 + r, months) - 1) / r) * (1 + r); }
 
-/* ---------- Chart helpers ---------- */
-/* Each tab rebuilds its own <canvas>; we destroy the previous chart for the
-   same canvas id and let Chart.js animate in the new dataset/type (~500ms). */
 function upsertChart(canvasId, config) {
   const canvas = document.getElementById(canvasId);
   if (!canvas || !window.Chart) return;
@@ -875,10 +852,7 @@ function drawGrowthChart(canvasId, labels, series) {
 }
 
 /* =========================================================
-   (d) FINANCIAL FREEDOM / RETIREMENT NUMBER CALCULATOR
-   Approach: inflate today's monthly expenses to retirement,
-   then capitalise with the safe real-return factor:
-        corpus = annualExpensesAtRetirement / (postRetReturn - inflation)
+   (d) FINANCIAL FREEDOM CALCULATOR
    ========================================================= */
 panelBuilders.freedom = () => {
   const meta = CALCS.find(c => c.id === 'freedom');
@@ -911,12 +885,15 @@ panelBuilders.freedom = () => {
     </div>
   `);
 
-  const exp = bindPair('ffExpense'), infl = bindPair('ffInfl'), pr = bindPair('ffPostRet'),
-        age = bindPair('ffAge'), retAge = bindPair('ffRetAge');
+  /* BUG FIX: Added () => recalc() */
+  const exp = bindPair('ffExpense', () => recalc());
+  const infl = bindPair('ffInfl', () => recalc());
+  const pr = bindPair('ffPostRet', () => recalc());
+  const age = bindPair('ffAge', () => recalc());
+  const retAge = bindPair('ffRetAge', () => recalc());
   if (!exp || !infl || !pr || !age || !retAge) return;
 
   const recalc = () => {
-    /* Keep target age ahead of current age */
     const a = age.value, target = Math.max(retAge.value, a + 1);
     const years = target - a;
     const i = infl.value / 100, r = pr.value / 100;
@@ -927,13 +904,11 @@ panelBuilders.freedom = () => {
 
     let corpus;
     if (spread <= 0.005) {
-      /* Real return ~0: use a 30x annual-expenses fallback and flag it */
       corpus = annualFuture * 30;
     } else {
       corpus = annualFuture / spread;
     }
 
-    /* SIP required at 12% p.a. to hit corpus in `years` */
     const sipReturn = 0.12 / 12, months = years * 12;
     const sipNeeded = months > 0
       ? corpus / (((Math.pow(1 + sipReturn, months) - 1) / sipReturn) * (1 + sipReturn))
@@ -950,7 +925,6 @@ panelBuilders.freedom = () => {
       : '';
     $('#ffNote').innerHTML = `Expenses today of ${inr(expNow)}/month grow at ${infl.value}% inflation to <strong class="text-gold-300">${inr(expFutureMonthly)}/month</strong> (= ${inrCompact(annualFuture)}/year) by age ${target}. Corpus = annual expenses ÷ (post-retirement return ${pr.value}% − inflation ${infl.value}%) = ${inrCompact(annualFuture)} ÷ ${(spread * 100).toFixed(1)}%.${warn} The monthly figure is the SIP you'd need from today at 12% p.a. equity returns.`;
 
-    /* Chart: invested vs corpus trajectory to target */
     const labels = [], corpusS = [];
     const step = Math.max(1, Math.round(years / 12));
     for (let y = 0; y <= years; y += step) {
@@ -969,8 +943,7 @@ panelBuilders.freedom = () => {
 };
 
 /* =========================================================
-   (e) DEBT PAYOFF / EMI CALCULATOR  — standard amortisation
-   EMI = P·r·(1+r)^n / ((1+r)^n − 1)
+   (e) DEBT PAYOFF / EMI CALCULATOR
    ========================================================= */
 panelBuilders.emi = () => {
   const meta = CALCS.find(c => c.id === 'emi');
@@ -1014,7 +987,10 @@ panelBuilders.emi = () => {
     </div>
   `);
 
-  const amt = bindPair('emiAmt'), rate = bindPair('emiRate'), ten = bindPair('emiTenure');
+  /* BUG FIX: Added () => recalc() */
+  const amt = bindPair('emiAmt', () => recalc());
+  const rate = bindPair('emiRate', () => recalc());
+  const ten = bindPair('emiTenure', () => recalc());
   if (!amt || !rate || !ten) return;
 
   const recalc = () => {
@@ -1022,7 +998,6 @@ panelBuilders.emi = () => {
     const emi = r === 0 ? P / n : (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
     const total = emi * n, interest = total - P, share = (interest / total) * 100;
 
-    /* Year-1 principal vs interest via month-by-month amortisation */
     let bal = P, y1P = 0, y1I = 0;
     const first12 = Math.min(12, n);
     for (let m = 0; m < first12; m++) {
@@ -1065,7 +1040,6 @@ initCalcTabs();
 
 /* =========================================================
    INSIGHTS — 10 evergreen articles
-   meta: category, read time, emoji; body: HTML string
    ========================================================= */
 const ARTICLES = [
   {
@@ -1531,7 +1505,6 @@ const ARTICLES = [
   }
 ];
 
-/* ---------- Insights grid ---------- */
 function renderInsights() {
   const grid = $('#insightsGrid');
   if (!grid) return;
@@ -1562,7 +1535,6 @@ function renderInsights() {
   observeReveals(grid);
 }
 
-/* ---------- Article reader ---------- */
 let currentArticleId = null, lastFocused = null;
 
 function openArticle(id) {
@@ -1608,7 +1580,6 @@ function openArticle(id) {
       </div>
     </div>`;
 
-  /* Build Key Takeaways from last "Key takeaways" list in the body */
   const tmp = document.createElement('div');
   tmp.innerHTML = a.body;
   const lists = Array.from(tmp.querySelectorAll('h2')).filter(h => /key takeaway/i.test(h.textContent));
@@ -1621,7 +1592,6 @@ function openArticle(id) {
     ? items.map(t => `<li>${t}</li>`).join('')
     : '<li>Read below for the full breakdown.</li>';
 
-  /* Remove the inline "Key takeaways" heading+list so it isn't duplicated */
   const prose = $('#articleBody .prose-ms');
   const h2s = Array.from(prose.querySelectorAll('h2')).filter(h => /key takeaway/i.test(h.textContent));
   if (h2s.length) {
@@ -1632,8 +1602,7 @@ function openArticle(id) {
   }
 
   $('#articleBackTop, #articleBackBottom').forEach(b => b.addEventListener('click', closeArticle));
-  $('.share-btn').forEach(b => b.addEventListener('click', () => doShare(b.dataset.share, a)));
-  $('#copyLink').addEventListener('click', async (e) => {
+  $('.share-btn').forEach(b => b.addEventListener('click', () => doShare(b.dataset.share, a)));$('#copyLink').addEventListener('click', async (e) => {
     const url = location.href.split('#')[0] + '#' + a.id;
     try {
       await navigator.clipboard.writeText(url);
@@ -1671,7 +1640,6 @@ function doShare(kind, a) {
   window.open(map[kind], '_blank', 'noopener,noreferrer');
 }
 
-/* ESC closes reader; progress bar follows overlay scroll */
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && !$('#articleOverlay').classList.contains('hidden')) closeArticle();
 });
@@ -1682,7 +1650,6 @@ $('#articleOverlay').addEventListener('scroll', (e) => {
   $('#readingProgress').style.width = pct + '%';
 });
 
-/* Deep-link support: #article-id */
 window.addEventListener('load', () => {
   const hash = location.hash.replace('#', '');
   if (ARTICLES.some(a => a.id === hash)) openArticle(hash);
@@ -1812,9 +1779,6 @@ function renderFooter() {
 
 renderAbout();
 renderFooter();
-
-/* Keep the insights grid rendering call at the very end of the script,
-   after all renderers are defined. */
 renderInsights();
 </script>
 </body>
